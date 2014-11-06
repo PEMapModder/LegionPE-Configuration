@@ -12,15 +12,17 @@ use pocketmine\math\Vector3;
 use pocketmine\Server;
 
 class Settings{
-	const RANK_IMPORTANCE_DEFAULT =         0x0000;
-	const RANK_IMPORTANCE_TESTER =          0x0001;
-	const RANK_IMPORTANCE_DONATOR =         0x0004;
-	const RANK_IMPORTANCE_DONATOR_PLUS =    0x0005;
-	const RANK_IMPORTANCE_VIP =             0x000C;
-	const RANK_IMPORTANCE_VIP_PLUS =        0x000D;
-	const RANK_IMPORTANCE_VIP_STAR =        0x000E;
-	const RANK_SECTOR_IMPORTANCE =          0x000F; // ranks of importance (how important the person is, like VERY  Important Person) must not exceed 15 according to this, 1 nibble
+	// ranks of importance (how important the person is, like VERY Important Person) must not exceed 15 according to this, 1 nibble
+	const RANK_IMPORTANCE_DEFAULT =         0x0000; // 0  , 0000
+	const RANK_IMPORTANCE_TESTER =          0x0001; // 1  , 0001
+	const RANK_IMPORTANCE_DONATOR =         0x0004; // 4  , 0100
+	const RANK_IMPORTANCE_DONATOR_PLUS =    0x0005; // 5  , 0101
+	const RANK_IMPORTANCE_VIP =             0x000C; // 12 , 1100
+	const RANK_IMPORTANCE_VIP_PLUS =        0x000D; // 13 , 1101
+	const RANK_IMPORTANCE_VIP_STAR =        0x000E; // 14 , 1110
+	const RANK_SECTOR_IMPORTANCE =          0x000F; // 15 , 1111
 
+	// permissions the rank has, 2 nibbles
 	const RANK_PERM_DEFAULT =               0x0000;
 	const RANK_PERM_MOD =                   0x0010;
 	const RANK_PERM_ADMIN =                 0x0030;
@@ -28,16 +30,19 @@ class Settings{
 	const RANK_PERM_      =                 0x0200;
 	const RANK_PERM_WORLD_EDIT =            0x0400;
 	const RANK_PERM_DEV =                   0x0800;
-	const RANK_SECTOR_PERMISSION =          0x0FF0; // permissions the rank has, 2 nibbles
+	const RANK_SECTOR_PERMISSION =          0x0FF0;
 
+	// precise (generally won't affect the program) degree of rank, 2 bits
 	const RANK_PREC_STD =                   0x0000;
 	const RANK_PREC_TRIAL =                 0x1000;
 	const RANK_PREC_HEAD =                  0x2000;
-	const RANK_SECTOR_PRECISION =           0x3000; // precise (generally won't affect the program) degree of rank, 2 bits
+	const RANK_SECTOR_PRECISION =           0x3000;
 
-	const KITPVP_RANK_FIGHTER = 0;
-	const KITPVP_RANK_ARCHER  = 1;
-	// blah
+	const KITPVP_KIT_FIGHTER   = 0;
+	const KITPVP_KIT_ARCHER    = 1;
+	const KITPVP_KIT_JUGGERNAUT = 10;
+	// blah; you can add up to 65535 (65536 kits from 0 to 65535)
+
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
 			if(!$server->isLevelGenerated($world)){
@@ -105,14 +110,45 @@ class Settings{
 	public static function kitpvp_spawn(Server $server){
 		return $server->getLevelByName("world_pvp")->getSpawnLocation();
 	}
-	public static function kitpvp_equip(Inventory $inv, $class){
-		switch($class){
-			case self::KITPVP_RANK_FIGHTER:
-				$inv->addItem(Item::get(Item::IRON_SWORD), Item::get(Item::MELON_SLICE, 0, 64)); // e.g.
+	public static function kitpvp_equip(Inventory $inv, $kitId){
+		switch($kitId){
+			case self::KITPVP_KIT_FIGHTER:
+				$inv->addItem(
+					// Item::get( Item ID, damage (default 0), count (default 1) )
+					Item::get(Item::IRON_SWORD),
+					Item::get(Item::MELON_SLICE, 0, 128)
+				);
 				break;
-			case self::KITPVP_RANK_ARCHER:
+			case self::KITPVP_KIT_ARCHER:
+				$inv->addItem(
+					Item::get(Item::BOW),
+					Item::get(Item::ARROW, 0, 128),
+					Item::get(Item::MELON_SLICE, 0, 128)
+				);
 				break;
 		}
+	}
+	public static function kitpvp_availableKits($rank){
+		$result = [
+			self::KITPVP_KIT_FIGHTER,
+			self::KITPVP_KIT_ARCHER
+		];
+		if($rank >= self::RANK_IMPORTANCE_DONATOR){ // need to be at least a donator to have these things
+
+		}
+		if($rank >= self::RANK_IMPORTANCE_DONATOR_PLUS){
+
+		}
+		if($rank >= self::RANK_IMPORTANCE_VIP){
+
+		}
+		if($rank >= self::RANK_IMPORTANCE_VIP_PLUS){
+
+		}
+		if($rank >= self::RANK_IMPORTANCE_VIP_STAR){
+			$result[] = self::KITPVP_KIT_JUGGERNAUT;
+		}
+		return $result;
 	}
 	public static function kitpvp_maxFriends($rank){
 		if($rank instanceof Session){
