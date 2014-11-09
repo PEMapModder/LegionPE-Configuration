@@ -38,10 +38,19 @@ class Settings{
 	const RANK_PREC_HEAD =                  0x2000;
 	const RANK_SECTOR_PRECISION =           0x3000;
 
-	const KITPVP_KIT_FIGHTER   = 0;
-	const KITPVP_KIT_ARCHER    = 1;
+	const KITPVP_KIT_FIGHTER   = 1;
+	const KITPVP_KIT_ARCHER    = 2;
 	const KITPVP_KIT_JUGGERNAUT = 10;
-	// blah; you can add up to 65535 (65536 kits from 0 to 65535)
+	// blah; you can add up to 256 (256 kits from 0 to 255)
+	private static $KITPVP_KIT_NAMES = [
+		self::KITPVP_KIT_FIGHTER => "Fighter",
+		self::KITPVP_KIT_ARCHER => "Archer",
+		self::KITPVP_KIT_JUGGERNAUT => "Juggernaut",
+	];
+
+	const PURCHASE_KIT_ARCHER = 0;
+	const PURCHASE_KIT_JUGGERNAUT = 1;
+	const PURCHASE_BITMASK_KIT = 0x000001FF;
 
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
@@ -128,27 +137,22 @@ class Settings{
 				break;
 		}
 	}
-	public static function kitpvp_availableKits($rank){
-		$result = [
-			self::KITPVP_KIT_FIGHTER,
-			self::KITPVP_KIT_ARCHER
-		];
-		if($rank >= self::RANK_IMPORTANCE_DONATOR){ // need to be at least a donator to have these things
-
+	public static function kitpvp_availableKits(Session $session){
+		return []; // TODO
+	}
+	public static function kitpvp_canAccessKit($kitId, Session $session){
+		// TODO
+		return false;
+	}
+	public static function kitpvp_getKitIdByString($name){
+		$id = array_search(strtolower($name), array_change_key_case(self::$KITPVP_KIT_NAMES, CASE_LOWER));
+		if(is_int($id)){
+			return $id;
 		}
-		if($rank >= self::RANK_IMPORTANCE_DONATOR_PLUS){
-
-		}
-		if($rank >= self::RANK_IMPORTANCE_VIP){
-
-		}
-		if($rank >= self::RANK_IMPORTANCE_VIP_PLUS){
-
-		}
-		if($rank >= self::RANK_IMPORTANCE_VIP_STAR){
-			$result[] = self::KITPVP_KIT_JUGGERNAUT;
-		}
-		return $result;
+		return false;
+	}
+	public static function kitpvp_getKitStringById($kitId){
+		return isset(self::$KITPVP_KIT_NAMES[$kitId]) ? self::$KITPVP_KIT_NAMES[$kitId]:"unknown";
 	}
 	public static function kitpvp_maxFriends($rank){
 		if($rank instanceof Session){
