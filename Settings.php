@@ -41,7 +41,7 @@ class Settings{
 	const KITPVP_KIT_FIGHTER   = 1;
 	const KITPVP_KIT_ARCHER    = 2;
 	const KITPVP_KIT_JUGGERNAUT = 10;
-	// blah; you can add up to 256 (256 kits from 0 to 255)
+	// blah; you can add up to 255 kits (255 kits from 1 to 255)
 	private static $KITPVP_KIT_NAMES = [
 		self::KITPVP_KIT_FIGHTER => "Fighter",
 		self::KITPVP_KIT_ARCHER => "Archer",
@@ -50,7 +50,10 @@ class Settings{
 
 	const PURCHASE_KIT_ARCHER = 0;
 	const PURCHASE_KIT_JUGGERNAUT = 1;
-	const PURCHASE_BITMASK_KIT = 0x000001FF;
+	const PURCHASE_CLASS_KIT = 0x00000100;
+	const PURCHASE_BITMASK_KIT = self::PURCHASE_CLASS_KIT | self::PURCHASE_BITMASK_ITEM;
+	const PURCHASE_BITMASK_CLASSES = 0xFFFFFF00;
+	const PURCHASE_BITMASK_ITEM = 0x000000FF;
 
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
@@ -138,10 +141,29 @@ class Settings{
 		}
 	}
 	public static function kitpvp_availableKits(Session $session){
-		return []; // TODO
+		$purchases = $session->getPurchases();
+		$available = [self::KITPVP_KIT_FIGHTER];
+		foreach($purchases as $purchase){
+			$id = $purchase->getProductId();
+			if($kitId = $id & self::PURCHASE_BITMASK_KIT){
+				if(isset(self::$KITPVP_KIT_NAMES[$kitId])){
+					$available[$kitId] = true;
+				}
+				// else?
+			}
+		}
+		return array_keys($available);
 	}
 	public static function kitpvp_canAccessKit($kitId, Session $session){
-		// TODO
+		if($kitId === self::KITPVP_KIT_FIGHTER){
+			return true;
+		}
+		$masked = $kitId | self::PURCHASE_CLASS_KIT;
+		foreach($session->getPurchases() as $p){
+			if($p->getProductId() === $masked){
+				return true;
+			}
+		}
 		return false;
 	}
 	public static function kitpvp_getKitIdByString($name){
