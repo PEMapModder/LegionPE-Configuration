@@ -101,6 +101,9 @@ class Settings{
 		}
 		return -1;
 	}
+	public static function parkour_spawnpoint(Server $server){
+		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
+	}
 	public static function portal(Position $p, LegionPE $main){
 		$x = $p->x;
 		$y = $p->y;
