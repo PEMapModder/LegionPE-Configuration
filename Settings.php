@@ -123,6 +123,9 @@ class Settings{
 		return null;
 	}
 	public static function kitpvp_spawn(Server $server){
+		foreach($server->getLevels() as $level){
+			$server->getLogger()->debug("Level " . $level->getName() . " (" . $level->getFolderName() . ")");
+		}
 		return $server->getLevelByName("world_pvp")->getSpawnLocation();
 	}
 	public static function kitpvp_equip(Inventory $inv, $kitId){
@@ -209,11 +212,30 @@ class Settings{
 		}
 		return 5;
 	}
-	public static function isSafeArea(Vector3 $pos){
+	public static function kitpvp_isSafeArea(Vector3 $pos){
 		$x = $pos->x;
 		$y = $pos->y;
 		$z = $pos->z;
 		return (-8 <= $x and $x <= 8 and 0 <= $y and $y <= 127 and -8 <= $z and $z <= 8);
+	}
+	public static function kitpvp_getTag($kills){
+		$tag = "";
+		if($kills >=25) $tag="Fighter";
+		if($kills >=75) $tag="Killer";
+		if($kills >=150) $tag="Dangerous";
+		if($kills >=250) $tag="Hard";
+		if($kills >=375) $tag="Beast";
+		if($kills >=525) $tag="Elite";
+		if($kills >=675) $tag="Warrior";
+		if($kills >=870) $tag="Knight";
+		if($kills >=1100) $tag="Addict";
+		if($kills >=1350) $tag="Unstoppable";
+		if($kills >=1625) $tag="Pro";
+		if($kills >=1925) $tag="Hardcore";
+		if($kills >=2250) $tag="Master";
+		if($kills >=2600) $tag="Legend";
+		if($kills >=2975) $tag="God";
+		return $tag;
 	}
 	public static function getGameByLevel(Level $level, LegionPE $main){
 		switch($level->getName()){
