@@ -57,7 +57,7 @@ class Settings{
 
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
-			if(!$server->isLevelGenerated($world)){
+			if($server->isLevelGenerated($world)){
 				$server->loadLevel($world);
 			}
 		}
