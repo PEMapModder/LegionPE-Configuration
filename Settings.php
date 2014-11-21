@@ -123,9 +123,9 @@ class Settings{
 		return null;
 	}
 	public static function kitpvp_spawn(Server $server){
-		foreach($server->getLevels() as $level){
-			$server->getLogger()->debug("Level " . $level->getName() . " (" . $level->getFolderName() . ")");
-		}
+//		foreach($server->getLevels() as $level){
+//			$server->getLogger()->debug("Level " . $level->getName() . " (" . $level->getFolderName() . ")");
+//		}
 		return $server->getLevelByName("world_pvp")->getSpawnLocation();
 	}
 	public static function kitpvp_equip(Inventory $inv, $kitId){
