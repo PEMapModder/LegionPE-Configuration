@@ -72,7 +72,7 @@ class Settings{
 		$number &= 0x0F;
 		return $number << 20;
 	}
-	public static function parkour_checkpoint(Position $p){
+	public static function parkour_checkpoint(Position $p, &$complete = false){
 		if($p->getLevel()->getName() !== "world_parkour"){
 			return -1;
 		}
@@ -81,25 +81,26 @@ class Settings{
 		$z = $p->getFloorZ();
 		if($y === 8){
 			if($x === 1560 and $z === -982){
-				return 0;
-			}
-			if($x === 1600 and $z === -957){
 				return 1;
 			}
-			if($x === 1658 and $z === -997){
+			if($x === 1600 and $z === -957){
 				return 2;
 			}
-			if($x === 1650 and $z === -913){
+			if($x === 1658 and $z === -997){
 				return 3;
 			}
-			if($x === 1712 and $z === -837){
+			if($x === 1650 and $z === -913){
 				return 4;
+			}
+			if($x === 1712 and $z === -837){
+				return 5;
 			}
 		}
 		if($y === 9 and $x === 1740 and $z === -912){
-			return 5;
+			$complete = true;
+			return 6;
 		}
-		return -1;
+		return 0;
 	}
 	public static function parkour_spawnpoint(Server $server){
 		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
