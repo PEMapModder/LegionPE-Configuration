@@ -27,8 +27,11 @@ class Settings{
 	const RANK_PERM_MOD =                   0x0010;
 	const RANK_PERM_ADMIN =                 0x0030;
 	const RANK_PERM_OWNER =                 0x0070;
-	const RANK_PERM_      =                 0x0200;
+	/** Permission to bypass spam (spam won't detect at all). SpicyCapacitor ignores this permission and logs anyways. */
+	const RANK_PERM_SPAM =                  0x0200;
+	/** Permission to edit the world. */
 	const RANK_PERM_WORLD_EDIT =            0x0400;
+	/** Permission to execute raw PHP code by `/eval` */
 	const RANK_PERM_DEV =                   0x0800;
 	const RANK_SECTOR_PERMISSION =          0x0FF0;
 
@@ -101,6 +104,14 @@ class Settings{
 			return 6;
 		}
 		return 0;
+	}
+	public static function parkour_isFallen(Vector3 $vector3){
+		if($vector3 instanceof Position){
+			if($vector3->getLevel()->getName() !== "world_parkour"){
+				return false;
+			}
+		}
+		return $vector3->y < 1;
 	}
 	public static function parkour_spawnpoint(Server $server){
 		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
