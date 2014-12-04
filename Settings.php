@@ -228,7 +228,7 @@ class Settings{
 		$x = $pos->x;
 		$y = $pos->y;
 		$z = $pos->z;
-		return (-8 <= $x and $x <= 8 and 0 <= $y and $y <= 127 and -8 <= $z and $z <= 8);
+		return 110 <= $x and $x <= 148 and 61 <= $y and $y <= 97 and -19 <= $z and $z <= 10;
 	}
 	public static function kitpvp_getTag($kills){
 		$tag = "";
