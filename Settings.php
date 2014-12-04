@@ -4,7 +4,7 @@ namespace legionpe\config;
 
 use legionpe\LegionPE;
 use legionpe\session\Session;
-use pocketmine\inventory\Inventory;
+use pocketmine\inventory\PlayerInventory;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
 use pocketmine\level\Position;
@@ -41,18 +41,13 @@ class Settings{
 	const RANK_PREC_HEAD =                  0x2000;
 	const RANK_SECTOR_PRECISION =           0x3000;
 
-	const KITPVP_KIT_FIGHTER   = 1;
-	const KITPVP_KIT_ARCHER    = 2;
-	const KITPVP_KIT_JUGGERNAUT = 10;
+	const KITPVP_KIT_PVP   = 1;
 	// blah; you can add up to 255 kits (255 kits from 1 to 255)
 	private static $KITPVP_KIT_NAMES = [
-		self::KITPVP_KIT_FIGHTER => "Fighter",
-		self::KITPVP_KIT_ARCHER => "Archer",
-		self::KITPVP_KIT_JUGGERNAUT => "Juggernaut",
+		self::KITPVP_KIT_PVP => "Fighter",
 	];
 
 	const PURCHASE_KIT_ARCHER = 0;
-	const PURCHASE_KIT_JUGGERNAUT = 1;
 	const PURCHASE_CLASS_KIT = 0x00000100;
 	const PURCHASE_BITMASK_KIT = self::PURCHASE_CLASS_KIT | self::PURCHASE_BITMASK_ITEM;
 	const PURCHASE_BITMASK_CLASSES = 0xFFFFFF00;
@@ -75,35 +70,46 @@ class Settings{
 		$number &= 0x0F;
 		return $number << 20;
 	}
-	public static function parkour_checkpoint(Position $p, &$complete = false){
+	public static function parkour_checkpoint_signs(Position $p, &$complete = false){
 		if($p->getLevel()->getName() !== "world_parkour"){
 			return -1;
 		}
 		$x = $p->getFloorX();
 		$y = $p->getFloorY();
 		$z = $p->getFloorZ();
-		if($y === 8){
-			if($x === 1560 and $z === -982){
+		if($y === 4){
+			if($x === 1567 and $z === -935){
 				return 1;
 			}
-			if($x === 1600 and $z === -957){
+			if($x === 1616 and $z === -1023){
 				return 2;
 			}
-			if($x === 1658 and $z === -997){
+			if($x === 1652 and $z === -916){
 				return 3;
 			}
-			if($x === 1650 and $z === -913){
+			if($x === 1669 and $z === -827){
+				$complete = true;
 				return 4;
 			}
-			if($x === 1712 and $z === -837){
-				return 5;
-			}
-		}
-		if($y === 9 and $x === 1740 and $z === -912){
-			$complete = true;
-			return 6;
 		}
 		return 0;
+	}
+	public static function parkour_checkpoint_startPos($id, Server $server){
+		$level = $server->getLevelByName("world_parkour");
+		switch($id){
+			case 0:
+				return new Position(1560, 5, -982, $level);
+			case 1:
+				return new Position(1600, 5, -956, $level);
+			case 2:
+				return new Position(1658, 5, -996, $level);
+			case 3:
+				return new Position(1650, 5, -911, $level);
+			case 4:
+				return new Position(1713, 5, -839, $level);
+			default:
+				return null;
+		}
 	}
 	public static function parkour_isFallen(Vector3 $vector3){
 		if($vector3 instanceof Position){
@@ -140,27 +146,24 @@ class Settings{
 //		}
 		return $server->getLevelByName("world_pvp")->getSpawnLocation();
 	}
-	public static function kitpvp_equip(Inventory $inv, $kitId){
+	public static function kitpvp_equip(PlayerInventory $inv, $kitId){
 		switch($kitId){
-			case self::KITPVP_KIT_FIGHTER:
+			case self::KITPVP_KIT_PVP:
 				$inv->addItem(
 					// Item::get( Item ID, damage (default 0), count (default 1) )
-					Item::get(Item::IRON_SWORD),
+					Item::get(Item::STONE_SWORD),
 					Item::get(Item::MELON_SLICE, 0, 128)
 				);
-				break;
-			case self::KITPVP_KIT_ARCHER:
-				$inv->addItem(
-					Item::get(Item::BOW),
-					Item::get(Item::ARROW, 0, 128),
-					Item::get(Item::MELON_SLICE, 0, 128)
-				);
+				$inv->setHelmet(new Item(298));
+				$inv->setChestplate(new Item(299));
+				$inv->setLeggings(new Item(300));
+				$inv->setBoots(new Item(301));
 				break;
 		}
 	}
 	public static function kitpvp_availableKits(Session $session){
 		$purchases = $session->getPurchases();
-		$available = [self::KITPVP_KIT_FIGHTER];
+		$available = [self::KITPVP_KIT_PVP];
 		foreach($purchases as $purchase){
 			$id = $purchase->getProductId();
 			if($kitId = $id & self::PURCHASE_BITMASK_KIT){
@@ -173,7 +176,7 @@ class Settings{
 		return array_keys($available);
 	}
 	public static function kitpvp_canAccessKit($kitId, Session $session){
-		if($kitId === self::KITPVP_KIT_FIGHTER){
+		if($kitId === self::KITPVP_KIT_PVP){
 			return true;
 		}
 		$masked = $kitId | self::PURCHASE_CLASS_KIT;
