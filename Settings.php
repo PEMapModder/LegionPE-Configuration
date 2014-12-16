@@ -3,6 +3,8 @@
 namespace legionpe\config;
 
 use legionpe\LegionPE;
+use legionpe\LogCapacitor;
+use legionpe\session\LogToChat;
 use legionpe\session\Session;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\item\Item;
@@ -122,20 +124,24 @@ class Settings{
 	public static function parkour_spawnpoint(Server $server){
 		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
 	}
-	public static function portal(Position $p, LegionPE $main){
+	public static function portal(Position $p, LegionPE $main, Session $session){
 		$x = $p->x;
 		$y = $p->y;
 		$z = $p->z;
+		LogCapacitor::log($log = new LogToChat($session), __FILE__ . __LINE__, "Detecting portal for $x, $y, $z");
 		if(7 <= $y and $y <= 13 and 426 <= $z and $z <= 430){
-			if($x === -52){
+			if(-53 <= $x and $x <= -52){
+				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected KitPvP");
 				return $main->getGame(Session::SESSION_GAME_KITPVP);
 			}
-			if($x === -130){
+			if(-131 <= $x and $x <= -130){
+				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected Spleef");
 				return $main->getGame(Session::SESSION_GAME_SPLEEF);
 			}
 			return null;
 		}
-		if(-93 <= $x and $x <= -89 and 7 <= $y and $y <= 13 and $z === 467){
+		if(-93 <= $x and $x <= -89 and 7 <= $y and $y <= 13 and 467 <= $x and $x <= 468){
+			LogCapacitor::log($log, __FILE__ . __LINE__, "Detected parkour");
 			return $main->getGame(Session::SESSION_GAME_PARKOUR);
 		}
 		return null;
