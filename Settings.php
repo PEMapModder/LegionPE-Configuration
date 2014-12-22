@@ -234,10 +234,27 @@ class Settings{
 		return 5;
 	}
 	public static function kitpvp_isSafeArea(Vector3 $pos){
+		echo "DEBUG: $pos at ($pos->x, $pos->y, $pos->z) is: ";
 		$x = $pos->x;
 		$y = $pos->y;
 		$z = $pos->z;
-		return 110 <= $x and $x <= 148 and 61 <= $y and $y <= 97 and -19 <= $z and $z <= 10;
+		$xCor = 110 <= $x and $x <= 148;
+		$yCor = 61 <= $y and $y <= 97;
+		$zCor = -19 <= $z and $z <= 10;
+		if(!$xCor){
+			echo "x not in safe area";
+		}
+		if(!$yCor){
+			echo "y not in safe area";
+		}
+		if(!$zCor){
+			echo "z not in safe area";
+		}
+		if($xCor and $yCor and $zCor){
+			echo "correct";
+		}
+		echo PHP_EOL;
+		return $xCor and $yCor and $zCor;
 	}
 	public static function kitpvp_getTag($kills){
 		$tag = "";
