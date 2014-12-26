@@ -239,8 +239,8 @@ class Settings{
 		$x = $pos->x;
 		$y = $pos->y;
 		$z = $pos->z;
-		$xCor = 110 <= $x and $x <= 148;
-		$yCor = 61 <= $y and $y <= 97;
+		$xCor = 10 <= $x and $x <= 110;
+		$yCor = 1 <= $y and $y <= 97;
 		$zCor = -19 <= $z and $z <= 10;
 		return $xCor and $yCor and $zCor;
 	}
