@@ -166,6 +166,8 @@ class Settings{
 				$inv->setBoots(new Item(301));
 				break;
 		}
+		$inv->sendArmorContents($inv->getHolder());
+		$inv->sendContents($inv->getHolder());
 	}
 	public static function kitpvp_availableKits(Session $session){
 		$purchases = $session->getPurchases();
