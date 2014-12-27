@@ -236,13 +236,18 @@ class Settings{
 		return 5;
 	}
 	public static function kitpvp_isSafeArea(Vector3 $pos){
-		$x = $pos->x;
-		$y = $pos->y;
-		$z = $pos->z;
-		$xCor = 10 <= $x and $x <= 110;
-		$yCor = 1 <= $y and $y <= 97;
-		$zCor = -19 <= $z and $z <= 10;
-		return $xCor and $yCor and $zCor;
+		// 110, 149
+		// 11, -20
+		$x = $pos->getFloorX();
+		$y = $pos->getFloorY();
+		$z = $pos->getFloorZ();
+		$x1 = 110 <= $x;
+		$x2 = $x < 149;
+		$y1 = 1 <= $y;
+		$y2 = $y < 97;
+		$z1 = -20 <= $z;
+		$z2 = $z < 11;
+		return $x1 and $x2 and $y1 and $y2 and $z1 and $z2;
 	}
 	public static function kitpvp_getTag($kills){
 		$tag = "";
