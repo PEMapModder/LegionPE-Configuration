@@ -129,7 +129,7 @@ class Settings{
 		$y = $p->y;
 		$z = $p->z;
 //		LogCapacitor::log($log = new LogToChat($session), __FILE__ . __LINE__, "Detecting portal for $x, $y, $z");
-		if(7 <= $y and $y <= 13 and 426 <= $z and $z <= 430){
+		if((7 <= $y) and ($y <= 13) and (426 <= $z) and ($z <= 430)){
 			if(-53 <= $x and $x <= -52){
 //				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected KitPvP");
 				return $main->getGame(Session::SESSION_GAME_KITPVP);
@@ -140,7 +140,7 @@ class Settings{
 			}
 			return null;
 		}
-		if(-93 <= $x and $x <= -89 and 7 <= $y and $y <= 13 and 467 <= $x and $x <= 468){
+		if((-93 <= $x) and ($x <= -89) and (7 <= $y) and ($y <= 13) and (467 <= $x) and ($x <= 468)){
 //			LogCapacitor::log($log, __FILE__ . __LINE__, "Detected parkour");
 			return $main->getGame(Session::SESSION_GAME_PARKOUR);
 		}
