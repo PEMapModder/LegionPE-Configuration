@@ -29,7 +29,9 @@ class Settings{
 	const RANK_PERM_MOD =                   0x0010;
 	const RANK_PERM_ADMIN =                 0x0030;
 	const RANK_PERM_OWNER =                 0x0070;
-	/** Permission to bypass spam (spam won't detect at all). SpicyCapacitor ignores this permission and logs anyways. */
+	/** Permission to be undetected by the auto AFK kicker. */
+	const RANK_PERM_AFK =                   0x0100;
+	/** Permission to bypass spam (spam detector won't detect at all). SpicyCapacitor ignores this permission and logs anyways. */
 	const RANK_PERM_SPAM =                  0x0200;
 	/** Permission to edit the world. */
 	const RANK_PERM_WORLD_EDIT =            0x0400;
@@ -43,13 +45,13 @@ class Settings{
 	const RANK_PREC_HEAD =                  0x2000;
 	const RANK_SECTOR_PRECISION =           0x3000;
 
-	const KITPVP_KIT_PVP   = 1;
+	const KITPVP_KIT_BASIC    = 1; // basic one
+	const KITPVP_KIT_ARCHER = 2;
 	// blah; you can add up to 255 kits (255 kits from 1 to 255)
 	private static $KITPVP_KIT_NAMES = [
-		self::KITPVP_KIT_PVP => "Fighter",
+		self::KITPVP_KIT_BASIC => "Fighter",
 	];
 
-	const PURCHASE_KIT_ARCHER = 0;
 	const PURCHASE_CLASS_KIT = 0x00000100;
 	const PURCHASE_BITMASK_KIT = self::PURCHASE_CLASS_KIT | self::PURCHASE_BITMASK_ITEM;
 	const PURCHASE_BITMASK_CLASSES = 0xFFFFFF00;
@@ -154,7 +156,7 @@ class Settings{
 	}
 	public static function kitpvp_equip(PlayerInventory $inv, $kitId){
 		switch($kitId){
-			case self::KITPVP_KIT_PVP:
+			case self::KITPVP_KIT_BASIC:
 				$inv->addItem(
 					// Item::get( Item ID, damage (default 0), count (default 1) )
 					Item::get(Item::STONE_SWORD),
@@ -171,21 +173,22 @@ class Settings{
 	}
 	public static function kitpvp_availableKits(Session $session){
 		$purchases = $session->getPurchases();
-		$available = [self::KITPVP_KIT_PVP];
+		$available = [self::KITPVP_KIT_BASIC];
 		foreach($purchases as $purchase){
 			$id = $purchase->getProductId();
-			if($kitId = $id & self::PURCHASE_BITMASK_KIT){
+			$class = $id & self::PURCHASE_BITMASK_CLASSES;
+			if($class === self::PURCHASE_CLASS_KIT){
+				$kitId = $id & self::PURCHASE_BITMASK_ITEM;
 				if(isset(self::$KITPVP_KIT_NAMES[$kitId])){
 					$available[$kitId] = true;
 				}
-				// else?
 			}
 		}
 		return array_keys($available);
 	}
 	public static function kitpvp_canAccessKit($kitId, Session $session){
-		if($kitId === self::KITPVP_KIT_PVP){
-			return true;
+		if($kitId === self::KITPVP_KIT_BASIC){
+			return true; // basic kit is always accessible
 		}
 		$masked = $kitId | self::PURCHASE_CLASS_KIT;
 		foreach($session->getPurchases() as $p){
@@ -195,6 +198,10 @@ class Settings{
 		}
 		return false;
 	}
+	/**
+	 * @param $name
+	 * @return int|bool
+	 */
 	public static function kitpvp_getKitIdByString($name){
 		$id = array_search(strtolower($name), array_change_key_case(self::$KITPVP_KIT_NAMES, CASE_LOWER));
 		if(is_int($id)){
