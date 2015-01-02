@@ -313,4 +313,7 @@ class Settings{
 		}
 		return true;
 	}
+	public static function spleef_spawn(Server $server){
+		return $server->getLevelByName("world_spleef")->getSpawnLocation();
+	}
 }
