@@ -15,6 +15,7 @@ use pocketmine\Server;
 
 class Settings{
 	// ranks of importance (how important the person is, like VERY Important Person) must not exceed 15 according to this, 1 nibble
+	// the first two bits are the two actual permission-affecting nibbles
 	const RANK_IMPORTANCE_DEFAULT =         0x0000; // 0  , 0000
 	const RANK_IMPORTANCE_TESTER =          0x0001; // 1  , 0001
 	const RANK_IMPORTANCE_DONATOR =         0x0004; // 4  , 0100
@@ -44,6 +45,11 @@ class Settings{
 	const RANK_PREC_TRIAL =                 0x1000;
 	const RANK_PREC_HEAD =                  0x2000;
 	const RANK_SECTOR_PRECISION =           0x3000;
+
+	// decorative ranks, which don't actually affect anything, 2 bits
+	/** Here you are, the youtuber rank */
+	const RANK_DECOR_YOUTUBER =             0x4000;
+	const RANK_SECTOR_DECOR =              0xC000;
 
 	const KITPVP_KIT_BASIC    = 1; // basic one
 	const KITPVP_KIT_ARCHER = 2;
