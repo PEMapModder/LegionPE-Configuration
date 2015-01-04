@@ -216,28 +216,28 @@ class Settings{
 		if($rank instanceof Session){
 			$rank = $rank->getRank();
 		}
-		if($rank & self::RANK_PERM_OWNER){
+		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_OWNER){
 			return PHP_INT_MAX;
 		}
-		if($rank & self::RANK_IMPORTANCE_VIP_STAR){
+		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_STAR){
 			return 25;
 		}
-		if($rank & self::RANK_IMPORTANCE_VIP_PLUS){
+		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_PLUS){
 			return 20;
 		}
-		if($rank & self::RANK_IMPORTANCE_VIP){
+		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP){
 			return 15;
 		}
-		if($rank & self::RANK_PERM_ADMIN){
+		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_ADMIN){
 			return 15;
 		}
-		if($rank & self::RANK_PERM_MOD){
+		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_MOD){
 			return 10;
 		}
-		if($rank & self::RANK_IMPORTANCE_DONATOR_PLUS){
+		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_DONATOR_PLUS){
 			return 10;
 		}
-		if($rank & self::RANK_IMPORTANCE_DONATOR){
+		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_DONATOR){
 			return 7;
 		}
 		return 5;
