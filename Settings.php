@@ -3,12 +3,9 @@
 namespace legionpe\config;
 
 use legionpe\LegionPE;
-//use legionpe\LogCapacitor;
-//use legionpe\session\LogToChat;
 use legionpe\session\Session;
-use pocketmine\inventory\PlayerInventory;
-use pocketmine\item\Item;
 use pocketmine\level\Level;
+use pocketmine\level\Location;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Server;
@@ -50,18 +47,6 @@ class Settings{
 	/** Here you are, the youtuber rank */
 	const RANK_DECOR_YOUTUBER =             0x4000;
 	const RANK_SECTOR_DECOR =              0xC000;
-
-	const KITPVP_KIT_BASIC    = 1; // basic one
-	const KITPVP_KIT_ARCHER = 2;
-	// blah; you can add up to 255 kits (255 kits from 1 to 255)
-	private static $KITPVP_KIT_NAMES = [
-		self::KITPVP_KIT_BASIC => "Fighter",
-	];
-
-	const PURCHASE_CLASS_KIT = 0x00000100;
-	const PURCHASE_BITMASK_KIT = self::PURCHASE_CLASS_KIT | self::PURCHASE_BITMASK_ITEM;
-	const PURCHASE_BITMASK_CLASSES = 0xFFFFFF00;
-	const PURCHASE_BITMASK_ITEM = 0x000000FF;
 
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
@@ -160,64 +145,6 @@ class Settings{
 //		}
 		return $server->getLevelByName("world_pvp")->getSpawnLocation();
 	}
-	public static function kitpvp_equip(PlayerInventory $inv, $kitId){
-		switch($kitId){
-			case self::KITPVP_KIT_BASIC:
-				$inv->addItem(
-					// Item::get( Item ID, damage (default 0), count (default 1) )
-					Item::get(Item::STONE_SWORD),
-					Item::get(Item::MELON_SLICE, 0, 128)
-				);
-				$inv->setHelmet(new Item(298));
-				$inv->setChestplate(new Item(299));
-				$inv->setLeggings(new Item(300));
-				$inv->setBoots(new Item(301));
-				break;
-		}
-		$inv->sendArmorContents($inv->getHolder());
-		$inv->sendContents($inv->getHolder());
-	}
-	public static function kitpvp_availableKits(Session $session){
-		$purchases = $session->getPurchases();
-		$available = [self::KITPVP_KIT_BASIC];
-		foreach($purchases as $purchase){
-			$id = $purchase->getProductId();
-			$class = $id & self::PURCHASE_BITMASK_CLASSES;
-			if($class === self::PURCHASE_CLASS_KIT){
-				$kitId = $id & self::PURCHASE_BITMASK_ITEM;
-				if(isset(self::$KITPVP_KIT_NAMES[$kitId])){
-					$available[$kitId] = true;
-				}
-			}
-		}
-		return array_keys($available);
-	}
-	public static function kitpvp_canAccessKit($kitId, Session $session){
-		if($kitId === self::KITPVP_KIT_BASIC){
-			return true; // basic kit is always accessible
-		}
-		$masked = $kitId | self::PURCHASE_CLASS_KIT;
-		foreach($session->getPurchases() as $p){
-			if($p->getProductId() === $masked){
-				return true;
-			}
-		}
-		return false;
-	}
-	/**
-	 * @param $name
-	 * @return int|bool
-	 */
-	public static function kitpvp_getKitIdByString($name){
-		$id = array_search(strtolower($name), array_change_key_case(self::$KITPVP_KIT_NAMES, CASE_LOWER));
-		if(is_int($id)){
-			return $id;
-		}
-		return false;
-	}
-	public static function kitpvp_getKitStringById($kitId){
-		return isset(self::$KITPVP_KIT_NAMES[$kitId]) ? self::$KITPVP_KIT_NAMES[$kitId]:"unknown";
-	}
 	public static function kitpvp_maxFriends($rank){
 		if($rank instanceof Session){
 			$rank = $rank->getRank();
@@ -281,6 +208,10 @@ class Settings{
 		if($kills >=2975) $tag="God";
 		return $tag;
 	}
+
+	public static function kitpvp_getNpcLocation(/** @noinspection PhpUnusedParameterInspection */ $id){
+		return new Location(); // TODO: LAMBO!
+	}
 	public static function getGameByLevel(Level $level, LegionPE $main){
 		switch($level->getName()){
 			case "world_pvp":
@@ -293,18 +224,6 @@ class Settings{
 				return $main->getGame(Session::SESSION_GAME_INFECTED);
 		}
 		return null;
-	}
-	public static function getPurchaseByCoords(Position $pos){
-		// TODO
-		if($pos === "dummy result"){
-			return [
-				"duration" => 86400, // seconds
-				"product" => 0x00000000, // product bitmask
-				"name" => "dummy product", // product display name
-				"price" => 100, // amount of coins to take
-			];
-		}
-		return false;
 	}
 	public static function equals(Position $init, Position... $poss){
 		$x = $init->x;
