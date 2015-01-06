@@ -209,8 +209,32 @@ class Settings{
 		return $tag;
 	}
 
-	public static function kitpvp_getNpcLocation(/** @noinspection PhpUnusedParameterInspection */ $id){
-		return new Location(); // TODO: LAMBO!
+	public static function kitpvp_getNpcLocation(Server $server, $id){
+		$id = (int) $id;
+		$l = $server->getLevelByName("world_pvp");
+		$loc = new Location(143.5, 61.5, 0, 90, 0, $l);
+		if($id === 1){
+			$loc->z = -3.5;
+		}
+		elseif($id === 2){
+			$loc->z = -1.5;
+		}
+		elseif($id === 3){
+			$loc->z = -5.5;
+		}
+		elseif($id === 4){
+			$loc->z = 1.5;
+		}
+		elseif($id === 5){
+			$loc->z = -7.5;
+		}
+		elseif($id === 6){
+			$loc->z = 3.5;
+		}
+		else{
+			throw new \UnexpectedValueException("`" . var_export($id, true) . "`");
+		}
+		return $loc;
 	}
 	public static function getGameByLevel(Level $level, LegionPE $main){
 		switch($level->getName()){
