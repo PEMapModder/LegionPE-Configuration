@@ -206,6 +206,7 @@ class Settings{
 		if($kills >=2250) $tag="Master";
 		if($kills >=2600) $tag="Legend";
 		if($kills >=2975) $tag="God";
+		if($kills >=3375) $tag="Myth";
 		return $tag;
 	}
 
