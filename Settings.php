@@ -4,6 +4,7 @@ namespace legionpe\config;
 
 use legionpe\LegionPE;
 use legionpe\session\Session;
+use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\item\Apple;
 use pocketmine\item\Bow;
 use pocketmine\item\Carrot;
@@ -46,22 +47,22 @@ class Settings{
 	const RANK_IMPORTANCE_DONATOR_PLUS =    0x0005; // 5  , 0101
 	const RANK_IMPORTANCE_VIP =             0x000C; // 12 , 1100
 	const RANK_IMPORTANCE_VIP_PLUS =        0x000D; // 13 , 1101
-	const RANK_IMPORTANCE_VIP_STAR =        0x000E; // 14 , 1110
-	const RANK_SECTOR_IMPORTANCE =          0x000F; // 15 , 1111
+	const RANK_IMPORTANCE_VIP_STAR =        0x000D; // 14 , 1101
+	const RANK_SECTOR_IMPORTANCE =          0x000F;
 
 	// permissions the rank has, 2 nibbles
 	const RANK_PERM_DEFAULT =               0x0000;
-	const RANK_PERM_MOD =                   0x0010;
-	const RANK_PERM_ADMIN =                 0x0030;
-	const RANK_PERM_OWNER =                 0x0070;
+	const RANK_PERM_MOD =                   0x0010; // 16
+	const RANK_PERM_ADMIN =                 0x0030; // 48
+	const RANK_PERM_OWNER =                 0x0070; // 112
 	/** Permission to be undetected by the auto AFK kicker. */
-	const RANK_PERM_AFK =                   0x0100;
+	const RANK_PERM_AFK =                   0x0100; // 256
 	/** Permission to bypass spam (spam detector won't detect at all). SpicyCapacitor ignores this permission and logs anyways. */
-	const RANK_PERM_SPAM =                  0x0200;
+	const RANK_PERM_SPAM =                  0x0200; // 512
 	/** Permission to edit the world. */
-	const RANK_PERM_WORLD_EDIT =            0x0400;
+	const RANK_PERM_WORLD_EDIT =            0x0400; // 1024
 	/** Permission to execute raw PHP code by `/eval` */
-	const RANK_PERM_DEV =                   0x0800;
+	const RANK_PERM_DEV =                   0x0800; // 2048
 	const RANK_SECTOR_PERMISSION =          0x0FF0;
 
 	// precise (generally won't affect the program) degree of rank, 2 bits
@@ -265,6 +266,28 @@ class Settings{
 			return 3;
 		}
 		return 2;
+	}
+	public static function kitpvp_killHeal(Session $session){
+		$rank = $session->getRank();
+		$i = $rank & self::RANK_SECTOR_IMPORTANCE;
+		$p = $rank & self::RANK_SECTOR_PERMISSION;
+		if($i === self::RANK_IMPORTANCE_VIP_PLUS){
+			$session->getPlayer()->heal(15, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		if($i === self::RANK_IMPORTANCE_VIP){
+			$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		if($i === self::RANK_IMPORTANCE_DONATOR_PLUS){
+			$session->getPlayer()->heal(6, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		if($i === self::RANK_IMPORTANCE_DONATOR or $p > 0){
+			$session->getPlayer()->heal(4, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
 	}
 
 	/**
