@@ -6,6 +6,7 @@ use legionpe\LegionPE;
 //use legionpe\LogCapacitor;
 //use legionpe\session\LogToChat;
 use legionpe\session\Session;
+use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\inventory\PlayerInventory;
 use pocketmine\item\Item;
 use pocketmine\level\Level;
@@ -294,6 +295,28 @@ class Settings{
 				return $main->getGame(Session::SESSION_GAME_INFECTED);
 		}
 		return null;
+	}
+	public static function kitpvp_killHeal(Session $session){
+		$rank = $session->getRank();
+		$i = $rank & self::RANK_SECTOR_IMPORTANCE;
+		$p = $rank & self::RANK_SECTOR_PERMISSION;
+		if($i === self::RANK_IMPORTANCE_VIP_PLUS){
+			$session->getPlayer()->heal(15, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		if($i === self::RANK_IMPORTANCE_VIP){
+			$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		if($i === self::RANK_IMPORTANCE_DONATOR_PLUS){
+			$session->getPlayer()->heal(6, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		if($i === self::RANK_IMPORTANCE_DONATOR or $p > 0){
+			$session->getPlayer()->heal(4, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			return;
+		}
+		$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
 	}
 	public static function getPurchaseByCoords(Position $pos){
 		// TODO
