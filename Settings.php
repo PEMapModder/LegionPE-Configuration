@@ -289,6 +289,33 @@ class Settings{
 		}
 		$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
 	}
+	public static function kitpvp_getNpcLocation(Server $server, $id){
+		$id = (int) $id;
+		$l = $server->getLevelByName("world_pvp");
+		$loc = new Location(143.5, 61.5, 0, 90, 0, $l);
+		if($id === 1){
+			$loc->z = -3.5;
+		}
+		elseif($id === 2){
+			$loc->z = -1.5;
+		}
+		elseif($id === 3){
+			$loc->z = -5.5;
+		}
+		elseif($id === 4){
+			$loc->z = 1.5;
+		}
+		elseif($id === 5){
+			$loc->z = -7.5;
+		}
+		elseif($id === 6){
+			$loc->z = 3.5;
+		}
+		else{
+			throw new \UnexpectedValueException("`" . var_export($id, true) . "`");
+		}
+		return $loc;
+	}
 
 	/**
 	 * @param int $level
@@ -347,33 +374,6 @@ class Settings{
 		return isset(self::$KITPVP_KITS[self::KIT_ARROWS][$level]) ? clone self::$KITPVP_KITS[self::KIT_ARROWS][$level]:null;
 	}
 
-	public static function kitpvp_getNpcLocation(Server $server, $id){
-		$id = (int) $id;
-		$l = $server->getLevelByName("world_pvp");
-		$loc = new Location(143.5, 61.5, 0, 90, 0, $l);
-		if($id === 1){
-			$loc->z = -3.5;
-		}
-		elseif($id === 2){
-			$loc->z = -1.5;
-		}
-		elseif($id === 3){
-			$loc->z = -5.5;
-		}
-		elseif($id === 4){
-			$loc->z = 1.5;
-		}
-		elseif($id === 5){
-			$loc->z = -7.5;
-		}
-		elseif($id === 6){
-			$loc->z = 3.5;
-		}
-		else{
-			throw new \UnexpectedValueException("`" . var_export($id, true) . "`");
-		}
-		return $loc;
-	}
 	public static function getGameByLevel(Level $level, LegionPE $main){
 		switch($level->getName()){
 			case "world_pvp":
@@ -386,6 +386,18 @@ class Settings{
 				return $main->getGame(Session::SESSION_GAME_INFECTED);
 		}
 		return null;
+	}
+	public static function getPurchaseByCoords(Position $pos){
+		// TODO
+		if($pos === "dummy result"){
+			return [
+				"duration" => 86400, // seconds
+				"product" => 0x00000000, // product bitmask
+				"name" => "dummy product", // product display name
+				"price" => 100, // amount of coins to take
+			];
+		}
+		return false;
 	}
 	public static function equals(Position $init, Position... $poss){
 		$x = $init->x;
