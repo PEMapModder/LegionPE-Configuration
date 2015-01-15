@@ -83,7 +83,7 @@ class Settings{
 	const KIT_FOOD = "food";
 	const KIT_BOW = "bow";
 	const KIT_ARROWS = "arrows";
-	/** @var Item[][] */
+	/** @var KitUpgradeInfo[][] */
 	public static $KITPVP_KITS = [];
 
 	public static function init(Server $server){
@@ -316,62 +316,11 @@ class Settings{
 		}
 		return $loc;
 	}
-
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getHelmetByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_HELMET][$level]) ? clone self::$KITPVP_KITS[self::KIT_HELMET][$level]:null;
+	public static function kitpvp_getKitUpgradeInfo($column, $level){
+		return self::$KITPVP_KITS[$column][$level];
 	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getChestplateByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_CHESTPLATE][$level]) ? clone self::$KITPVP_KITS[self::KIT_CHESTPLATE][$level]:null;
-	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getLeggingsByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_LEGGINGS][$level]) ? clone self::$KITPVP_KITS[self::KIT_LEGGINGS][$level]:null;
-	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getBootsByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_BOOTS][$level]) ? clone self::$KITPVP_KITS[self::KIT_BOOTS][$level]:null;
-	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getWeaponByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_WEAPON][$level]) ? clone self::$KITPVP_KITS[self::KIT_WEAPON][$level]:null;
-	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getFoodByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_FOOD][$level]) ? clone self::$KITPVP_KITS[self::KIT_FOOD][$level]:null;
-	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getBowByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_BOW][$level]) ? clone self::$KITPVP_KITS[self::KIT_BOW][$level]:null;
-	}
-	/**
-	 * @param int $level
-	 * @return Item|null
-	 */
-	public static function kitpvp_getArrowsByLevel($level){
-		return isset(self::$KITPVP_KITS[self::KIT_ARROWS][$level]) ? clone self::$KITPVP_KITS[self::KIT_ARROWS][$level]:null;
+	public static function kitpvp_maxLevel($column){
+		return max(array_keys(self::$KITPVP_KITS[$column]));
 	}
 
 	public static function getGameByLevel(Level $level, LegionPE $main){
@@ -419,61 +368,61 @@ class Settings{
 
 Settings::$KITPVP_KITS = [
 	Settings::KIT_HELMET => [
-		0 => new LeatherCap,
-		1 => new GoldHelmet,
-		2 => new ChainHelmet,
-		3 => new IronHelmet,
-		4 => new DiamondHelmet
+		0 => new KitUpgradeInfo(new LeatherCap, 1),
+		1 => new KitUpgradeInfo(new GoldHelmet, 1),
+		2 => new KitUpgradeInfo(new ChainHelmet, 1),
+		3 => new KitUpgradeInfo(new IronHelmet, 1),
+		4 => new KitUpgradeInfo(new DiamondHelmet, 1),
 	],
 	Settings::KIT_CHESTPLATE => [
-		0 => new LeatherTunic,
-		1 => new GoldChestplate,
-		2 => new ChainChestplate,
-		3 => new IronChestplate,
-		4 => new DiamondChestplate
+		0 => new KitUpgradeInfo(new LeatherTunic, 1),
+		1 => new KitUpgradeInfo(new GoldChestplate, 1),
+		2 => new KitUpgradeInfo(new ChainChestplate, 1),
+		3 => new KitUpgradeInfo(new IronChestplate, 1),
+		4 => new KitUpgradeInfo(new DiamondChestplate, 1),
 	],
 	Settings::KIT_LEGGINGS => [
-		0 => new LeatherPants,
-		1 => new GoldLeggings,
-		2 => new ChainLeggings,
-		3 => new IronLeggings,
-		4 => new DiamondLeggings
+		0 => new KitUpgradeInfo(new LeatherPants, 1),
+		1 => new KitUpgradeInfo(new GoldLeggings, 1),
+		2 => new KitUpgradeInfo(new ChainLeggings, 1),
+		3 => new KitUpgradeInfo(new IronLeggings, 1),
+		4 => new KitUpgradeInfo(new DiamondLeggings, 1),
 	],
 	Settings::KIT_BOOTS => [
-		0 => new LeatherBoots,
-		1 => new GoldBoots,
-		2 => new ChainBoots,
-		3 => new IronBoots,
-		4 => new DiamondBoots
+		0 => new KitUpgradeInfo(new LeatherBoots, 1),
+		1 => new KitUpgradeInfo(new GoldBoots, 1),
+		2 => new KitUpgradeInfo(new ChainBoots, 1),
+		3 => new KitUpgradeInfo(new IronBoots, 1),
+		4 => new KitUpgradeInfo(new DiamondBoots, 1),
 	],
 	Settings::KIT_WEAPON => [
-		0 => new StoneSword,
-		1 => new IronSword,
-		2 => new DiamondSword
+		0 => new KitUpgradeInfo(new StoneSword, 1),
+		1 => new KitUpgradeInfo(new IronSword, 1),
+		2 => new KitUpgradeInfo(new DiamondSword, 1),
 	],
 	Settings::KIT_FOOD => [
-		0 => Item::get(Item::MELON_SLICE, 0, 64),
-		1 => new Carrot(0, 64),
-		2 => new Apple(0, 64),
-		3 => Item::get(Item::BREAD),
-		4 => Item::get(Item::COOKED_CHICKEN),
-		5 => Item::get(Item::COOKED_PORKCHOP),
-		6 => Item::get(Item::GOLDEN_APPLE)
+		0 => new KitUpgradeInfo(Item::get(Item::MELON_SLICE, 0, 64), 1),
+		1 => new KitUpgradeInfo(new Carrot(0, 64), 1),
+		2 => new KitUpgradeInfo(new Apple(0, 64), 1),
+		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 1),
+		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN), 1),
+		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP), 1),
+		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE), 1),
 	],
 	Settings::KIT_BOW => [
-		0 => Item::get(0),
-		1 => new Bow
+		0 => new KitUpgradeInfo(Item::get(0), 1),
+		1 => new KitUpgradeInfo(new Bow, 1),
 	],
 	Settings::KIT_ARROWS => [
-		0 => Item::get(0),
-		1 => Item::get(Item::ARROW, 0, 8),   // +8
-		2 => Item::get(Item::ARROW, 0, 16),  // +8
-		3 => Item::get(Item::ARROW, 0, 32),  // +16
-		4 => Item::get(Item::ARROW, 0, 64),  // +16
-		5 => Item::get(Item::ARROW, 0, 96),  // +32
-		6 => Item::get(Item::ARROW, 0, 128), // +32
-		7 => Item::get(Item::ARROW, 0, 192), // +64
-		8 => Item::get(Item::ARROW, 0, 256), // +64
+		0 => new KitUpgradeInfo(Item::get(0), 1),
+		1 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 8), 1),   // +8
+		2 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 16), 1),  // +8
+		3 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 32), 1),  // +16
+		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 1),  // +16
+		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 1),  // +32
+		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 1), // +32
+		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 1), // +64
+		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 1), // +64
 	]
 	// format: $level => $item
 ];
