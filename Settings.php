@@ -31,6 +31,7 @@ class Settings{
 	const RANK_PERM_MOD =                   0x0010;
 	const RANK_PERM_ADMIN =                 0x0030;
 	const RANK_PERM_OWNER =                 0x0070;
+	const RANK_PERM_STAFF =                 0x00F0;
 	/** Permission to be undetected by the auto AFK kicker. */
 	const RANK_PERM_AFK =                   0x0100;
 	/** Permission to bypass spam (spam detector won't detect at all). SpicyCapacitor ignores this permission and logs anyways. */
