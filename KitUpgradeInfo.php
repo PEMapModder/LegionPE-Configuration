@@ -50,7 +50,7 @@ class KitUpgradeInfo{
 	public function canPurchase(Session $session){
 		return ($session->getRank() & Settings::RANK_SECTOR_IMPORTANCE) >= $this->minRank or ($session->getRank() & Settings::RANK_SECTOR_PERMISSION) > 0;
 	}
-	public function sendPurchaseMessage(Session $session){
+	public function sendCantPurchaseMessage(Session $session){
 		if(!$this->canPurchase($session)){
 			$session->tell("You need to at least be a $this->minRankName to purchase this upgrade.");
 			return true;
