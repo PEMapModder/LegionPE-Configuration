@@ -317,6 +317,19 @@ class Settings{
 		}
 		return $loc;
 	}
+	public static function kitpvp_getShopLocations(Server $server){
+		$level = $server->getLevelByName("world_pvp");
+		return [
+			Settings::KIT_HELMET => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_CHESTPLATE => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_LEGGINGS => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_BOOTS => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_WEAPON => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_FOOD => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_BOW => new Location(143, 61.5, 0, 180, 0, $level),
+			Settings::KIT_ARROWS => new Location(143, 61.5, 0, 180, 0, $level),
+		];
+	}
 	public static function kitpvp_getKitUpgradeInfo($column, $level){
 		return self::$KITPVP_KITS[$column][$level];
 	}
