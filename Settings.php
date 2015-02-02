@@ -293,7 +293,7 @@ class Settings{
 	public static function kitpvp_getNpcLocation(Server $server, $id){
 		$id = (int) $id;
 		$l = $server->getLevelByName("world_pvp");
-		$loc = new Location(143.5, 61.5, 0, 90, 0, $l);
+		$loc = new Location(143.5, 61.5, 0, M_PI / 2, 0, $l);
 		if($id === 1){
 			$loc->z = -3.5;
 		}
@@ -320,14 +320,14 @@ class Settings{
 	public static function kitpvp_getShopLocations(Server $server){
 		$level = $server->getLevelByName("world_pvp");
 		return [
-			Settings::KIT_HELMET => new Location(141, 61.5, -6.5, 180, 0, $level),
-			Settings::KIT_CHESTPLATE => new Location(139, 61.5, -6.5, 180, 0, $level),
-			Settings::KIT_LEGGINGS => new Location(139, 61.5, -6.5, 180, 0, $level),
-			Settings::KIT_BOOTS => new Location(137, 61.5, -6.5, 180, 0, $level),
-			Settings::KIT_WEAPON => new Location(141, 61.5, 4.5, 180, 0, $level),
-			Settings::KIT_FOOD => new Location(139, 61.5, 4.5, 180, 0, $level),
-			Settings::KIT_BOW => new Location(137, 61.5, 4.5, 180, 0, $level),
-			Settings::KIT_ARROWS => new Location(135, 61.5, 4.5, 180, 0, $level),
+			Settings::KIT_HELMET => new Location(141, 61.5, -9.5, 0, 0, $level),
+			Settings::KIT_CHESTPLATE => new Location(139, 61.5, -9.5, 0, 0, $level),
+			Settings::KIT_LEGGINGS => new Location(139, 61.5, -9.5, 0, 0, $level),
+			Settings::KIT_BOOTS => new Location(137, 61.5, -9.5, 0, 0, $level),
+			Settings::KIT_WEAPON => new Location(141, 61.5, 4.5, M_PI, 0, $level),
+			Settings::KIT_FOOD => new Location(139, 61.5, 4.5, M_PI, 0, $level),
+			Settings::KIT_BOW => new Location(137, 61.5, 4.5, M_PI, 0, $level),
+			Settings::KIT_ARROWS => new Location(135, 61.5, 4.5, M_PI, 0, $level),
 		];
 	}
 	public static function kitpvp_getKitUpgradeInfo($column, $level){
