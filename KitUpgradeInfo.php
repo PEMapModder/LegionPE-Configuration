@@ -5,6 +5,7 @@ namespace legionpe\config;
 use legionpe\session\Session;
 use legionpe\utils\GrammarUtils;
 use pocketmine\item\Item;
+use pocketmine\utils\TextFormat;
 
 class KitUpgradeInfo{
 	/** @var \pocketmine\item\Item */
@@ -43,9 +44,15 @@ class KitUpgradeInfo{
 		return $this->price;
 	}
 	public function itemsToString(){
+		if($this->item->getId() === Item::AIR){
+			return false;
+		}
 		$name = $this->item->getName();
+		if($name === "Unknown"){
+			$name = $this->searchItemNameFromConsts($this->item->getId());
+		}
 		GrammarUtils::word_quantitize($name, $this->item->getCount());
-		return $name . ($this->item->getDamage() === 0 ? "":" with damage value " . $this->item->getDamage());
+		return strtolower($name) . ($this->item->getDamage() === 0 ? "":" with damage value " . $this->item->getDamage());
 	}
 	public function canPurchase(Session $session){
 		return ($session->getRank() & Settings::RANK_SECTOR_IMPORTANCE) >= $this->minRank or ($session->getRank() & Settings::RANK_SECTOR_PERMISSION) > 0;
@@ -56,5 +63,14 @@ class KitUpgradeInfo{
 			return true;
 		}
 		return false;
+	}
+	private function searchItemNameFromConsts($id){
+		foreach((new \ReflectionClass(Item::class))->getConstants() as $name => $val){
+			if($id === $val){
+				$ret = strtolower(str_replace("_", " ", $name));
+				return $ret;
+			}
+		}
+		return TextFormat::RED . "Unknown" . TextFormat::RESET;
 	}
 }
