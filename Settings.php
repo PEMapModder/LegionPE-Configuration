@@ -230,23 +230,23 @@ class Settings{
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_STAR){
 			return 25;
 		}
+		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_ADMIN){
+			return 25;
+		}
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_PLUS){
-			return 20;
+			return 25;
 		}
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP){
-			return 15;
-		}
-		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_ADMIN){
-			return 15;
+			return 20;
 		}
 		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_MOD){
-			return 10;
+			return 20;
 		}
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_DONATOR_PLUS){
-			return 10;
+			return 15;
 		}
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_DONATOR){
-			return 7;
+			return 10;
 		}
 		return 5;
 	}
