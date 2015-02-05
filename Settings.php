@@ -419,9 +419,9 @@ Settings::$KITPVP_KITS = [
 	],
 	Settings::KIT_FOOD => [
 		0 => new KitUpgradeInfo(Item::get(Item::MELON_SLICE, 0, 64), 0),
-		1 => new KitUpgradeInfo(new Carrot(0, 64), 500),
-		2 => new KitUpgradeInfo(new Apple(0, 64), 2500),
-		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 7500),
+		1 => new KitUpgradeInfo(new Carrot(0, 64), 750),
+		2 => new KitUpgradeInfo(new Apple(0, 64), 5000),
+		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 8500),
 		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN), 15000, Settings::RANK_IMPORTANCE_DONATOR),
 		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP), 25000, Settings::RANK_IMPORTANCE_VIP),
 		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE), 40000, Settings::RANK_IMPORTANCE_VIP_PLUS),
