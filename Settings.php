@@ -6,7 +6,6 @@ use legionpe\LegionPE;
 use legionpe\session\Session;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\item\Apple;
-use pocketmine\item\Bow;
 use pocketmine\item\Carrot;
 use pocketmine\item\ChainBoots;
 use pocketmine\item\ChainChestplate;
@@ -82,7 +81,6 @@ class Settings{
 	const KIT_BOOTS = "boots";
 	const KIT_WEAPON = "weapon";
 	const KIT_FOOD = "food";
-	const KIT_BOW = "bow";
 	const KIT_ARROWS = "arrows";
 	/** @var KitUpgradeInfo[][] */
 	public static $KITPVP_KITS = [];
@@ -97,12 +95,27 @@ class Settings{
 	public static function loginSpawn(Server $server){
 		return $server->getLevelByName("world")->getSpawnLocation();
 	}
-	public static function defaultTeamLimit(){
-		return 3;
-	}
-	public static function shiftTeamLimit($number){
-		$number &= 0x0F;
-		return $number << 20;
+	public static function portal(Position $p, LegionPE $main /* , Session $session*/ ){
+		$x = $p->x;
+		$y = $p->y;
+		$z = $p->z;
+		//		LogCapacitor::log($log = new LogToChat($session), __FILE__ . __LINE__, "Detecting portal for $x, $y, $z");
+		if((7 <= $y) and ($y <= 13) and (426 <= $z) and ($z <= 430)){
+			if(-53 <= $x and $x <= -52){
+				//				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected KitPvP");
+				return $main->getGame(Session::SESSION_GAME_KITPVP);
+			}
+			if(-131 <= $x and $x <= -130){
+				//				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected Spleef");
+				return $main->getGame(Session::SESSION_GAME_SPLEEF);
+			}
+			return null;
+		}
+		if((-93 <= $x) and ($x <= -89) and (7 <= $y) and ($y <= 13) and (467 <= $x) and ($x <= 468)){
+			//			LogCapacitor::log($log, __FILE__ . __LINE__, "Detected parkour");
+			return $main->getGame(Session::SESSION_GAME_PARKOUR);
+		}
+		return null;
 	}
 	public static function parkour_checkpoint_signs(Position $p, &$complete = false){
 		if($p->getLevel()->getName() !== "world_parkour"){
@@ -155,28 +168,6 @@ class Settings{
 	}
 	public static function parkour_spawnpoint(Server $server){
 		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
-	}
-	public static function portal(Position $p, LegionPE $main /* , Session $session*/ ){
-		$x = $p->x;
-		$y = $p->y;
-		$z = $p->z;
-//		LogCapacitor::log($log = new LogToChat($session), __FILE__ . __LINE__, "Detecting portal for $x, $y, $z");
-		if((7 <= $y) and ($y <= 13) and (426 <= $z) and ($z <= 430)){
-			if(-53 <= $x and $x <= -52){
-//				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected KitPvP");
-				return $main->getGame(Session::SESSION_GAME_KITPVP);
-			}
-			if(-131 <= $x and $x <= -130){
-//				LogCapacitor::log($log, __FILE__ . __LINE__, "Detected Spleef");
-				return $main->getGame(Session::SESSION_GAME_SPLEEF);
-			}
-			return null;
-		}
-		if((-93 <= $x) and ($x <= -89) and (7 <= $y) and ($y <= 13) and (467 <= $x) and ($x <= 468)){
-//			LogCapacitor::log($log, __FILE__ . __LINE__, "Detected parkour");
-			return $main->getGame(Session::SESSION_GAME_PARKOUR);
-		}
-		return null;
 	}
 	public static function kitpvp_spawn(Server $server){
 //		foreach($server->getLevels() as $level){
@@ -255,18 +246,18 @@ class Settings{
 		$perm = $rank & self::RANK_SECTOR_PERMISSION;
 		$imptc = $rank & self::RANK_SECTOR_IMPORTANCE;
 		if($perm === self::RANK_PERM_OWNER or $imptc === self::RANK_IMPORTANCE_VIP_STAR){
-			return 6;
-		}
-		if($perm === self::RANK_PERM_ADMIN or $imptc === self::RANK_IMPORTANCE_VIP_PLUS){
 			return 5;
 		}
-		if($perm === self::RANK_PERM_MOD or $imptc === self::RANK_IMPORTANCE_VIP){
+		if($perm === self::RANK_PERM_ADMIN or $imptc === self::RANK_IMPORTANCE_VIP_PLUS){
 			return 4;
 		}
-		if($imptc === self::RANK_IMPORTANCE_DONATOR_PLUS or $imptc === self::RANK_IMPORTANCE_DONATOR){
+		if($perm === self::RANK_PERM_MOD or $imptc === self::RANK_IMPORTANCE_VIP){
 			return 3;
 		}
-		return 2;
+		if($imptc === self::RANK_IMPORTANCE_DONATOR_PLUS or $imptc === self::RANK_IMPORTANCE_DONATOR){
+			return 2;
+		}
+		return 1;
 	}
 	public static function kitpvp_killHeal(Session $session){
 		$rank = $session->getRank();
@@ -293,24 +284,21 @@ class Settings{
 	public static function kitpvp_getNpcLocation(Server $server, $id){
 		$id = (int) $id;
 		$l = $server->getLevelByName("world_pvp");
-		$loc = new Location(143.5, 61.5, 0, M_PI / 2, 0, $l);
+		$loc = new Location(151.5, 54, 0, 90, 0, $l);
 		if($id === 1){
-			$loc->z = -3.5;
-		}
-		elseif($id === 2){
-			$loc->z = -1.5;
-		}
-		elseif($id === 3){
-			$loc->z = -5.5;
-		}
-		elseif($id === 4){
 			$loc->z = 1.5;
 		}
-		elseif($id === 5){
-			$loc->z = -7.5;
+		elseif($id === 2){
+			$loc->z = -0.5;
 		}
-		elseif($id === 6){
-			$loc->z = 3.5;
+		elseif($id === 3){
+			$loc->z = 2.5;
+		}
+		elseif($id === 4){
+			$loc->z = 4.5;
+		}
+		elseif($id === 5){
+			$loc->z = 6.5;
 		}
 		else{
 			throw new \UnexpectedValueException("`" . var_export($id, true) . "`");
@@ -320,23 +308,50 @@ class Settings{
 	public static function kitpvp_getShopLocations(Server $server){
 		$level = $server->getLevelByName("world_pvp");
 		return [
-			Settings::KIT_HELMET => new Location(141, 61.5, -9.5, 0, 0, $level),
-			Settings::KIT_CHESTPLATE => new Location(139, 61.5, -9.5, 0, 0, $level),
-			Settings::KIT_LEGGINGS => new Location(139, 61.5, -9.5, 0, 0, $level),
-			Settings::KIT_BOOTS => new Location(137, 61.5, -9.5, 0, 0, $level),
-			Settings::KIT_WEAPON => new Location(141, 61.5, 4.5, M_PI, 0, $level),
-			Settings::KIT_FOOD => new Location(139, 61.5, 4.5, M_PI, 0, $level),
-			Settings::KIT_BOW => new Location(137, 61.5, 4.5, M_PI, 0, $level),
-			Settings::KIT_ARROWS => new Location(135, 61.5, 4.5, M_PI, 0, $level),
+			Settings::KIT_HELMET => new Location(135.5, 54, -14.5, 0, 0, $level),
+			Settings::KIT_CHESTPLATE => new Location(137.5, 54, -14.5, 0, 0, $level),
+			Settings::KIT_LEGGINGS => new Location(141.5, 54, -14.5, 0, 0, $level),
+			Settings::KIT_BOOTS => new Location(143.5, 54, -14.5, 0, 0, $level),
+			Settings::KIT_WEAPON => new Location(143.5, 54, 8.5, 180, 0, $level),
+			Settings::KIT_FOOD => new Location(139, 54, 9.5, 180, 0, $level),
+			Settings::KIT_ARROWS => new Location(135, 54, 9.5, 180, 0, $level),
 		];
+	}
+	public static function kitpvp_getBowLocation(Server $server){
+		return new Location(127.5, 54, -2.5, 270.0, 22, $server->getLevelByName("world_pvp"));
 	}
 	public static function kitpvp_getKitUpgradeInfo($column, $level){
 		return self::$KITPVP_KITS[$column][$level];
 	}
+	/**
+	 * @param $newLevel
+	 * @return array <code>[int price, string name, string description, short damage, int fire aspect duration ticks, double knockback magnitude]</code>
+	 */
+	public static function kitpvp_getBowInfo($newLevel){
+		switch($newLevel){
+			case 0:
+				return [0, "nihil (nothing)", "The art of Taoism: doing nothing. Don't leave spawn, that's how you keep your deaths from increasing.", 0, 0, 0];
+			case 1:
+				return [1500, "Wooden Bow", "The basic wood holds the key to everything, from the basic crafting table to the tip of the majestic diamond sword.", 6, 0, 0];
+//			case 2:
+//				return [5000, "Ghast Bone Bow", "The elastic ghast bone magnifies the power of ranged fighting, making ghasts one of the horrors in the Nether.", 8, 0, 0];
+//			case 3:
+//				return [12500, "Blaze Rod Bow", "Blaze rods build up the essence of fire, so its effect is still significant in the overworld where fire can be extinguished.", 9, 70, 0];
+//			case 4:
+//				return [30000, "Enderdragon Rib Bow", "The throned enderdragon rib is the tool that knocked numerous players into the void. Shall it be your tool?", 10, 80, 20];
+		}
+		return [PHP_INT_MAX, "You Guess?", "Uncertainty is a powerful weapon. Sadly, there are no potions of uncertainty in Minecraft.", 0, 0, 0];
+	}
 	public static function kitpvp_maxLevel($column){
 		return max(array_keys(self::$KITPVP_KITS[$column]));
 	}
-
+	public static function defaultTeamLimit(){
+		return 3;
+	}
+	public static function shiftTeamLimit($number){
+		$number &= 0x0F;
+		return $number << 20;
+	}
 	public static function getGameByLevel(Level $level, LegionPE $main){
 		switch($level->getName()){
 			case "world_pvp":
@@ -349,18 +364,6 @@ class Settings{
 				return $main->getGame(Session::SESSION_GAME_INFECTED);
 		}
 		return null;
-	}
-	public static function getPurchaseByCoords(Position $pos){
-		// TODO
-		if($pos === "dummy result"){
-			return [
-				"duration" => 86400, // seconds
-				"product" => 0x00000000, // product bitmask
-				"name" => "dummy product", // product display name
-				"price" => 100, // amount of coins to take
-			];
-		}
-		return false;
 	}
 	public static function equals(Position $init, Position... $poss){
 		$x = $init->x;
@@ -383,59 +386,55 @@ class Settings{
 Settings::$KITPVP_KITS = [
 	Settings::KIT_HELMET => [
 		0 => new KitUpgradeInfo(new LeatherCap, 0),
-		1 => new KitUpgradeInfo(new GoldHelmet, 500),
-		2 => new KitUpgradeInfo(new ChainHelmet, 2500),
-		3 => new KitUpgradeInfo(new IronHelmet, 12500, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondHelmet, 50000, Settings::RANK_IMPORTANCE_VIP),
+		1 => new KitUpgradeInfo(new GoldHelmet, 250),
+		2 => new KitUpgradeInfo(new ChainHelmet, 1250),
+		3 => new KitUpgradeInfo(new IronHelmet, 6250, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(new DiamondHelmet, 25000, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_CHESTPLATE => [
 		0 => new KitUpgradeInfo(new LeatherTunic, 0),
-		1 => new KitUpgradeInfo(new GoldChestplate, 800),
-		2 => new KitUpgradeInfo(new ChainChestplate, 4000),
-		3 => new KitUpgradeInfo(new IronChestplate, 20000, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondChestplate, 80000, Settings::RANK_IMPORTANCE_VIP),
+		1 => new KitUpgradeInfo(new GoldChestplate, 400),
+		2 => new KitUpgradeInfo(new ChainChestplate, 2000),
+		3 => new KitUpgradeInfo(new IronChestplate, 10000, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(new DiamondChestplate, 40000, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_LEGGINGS => [
 		0 => new KitUpgradeInfo(new LeatherPants, 0),
-		1 => new KitUpgradeInfo(new GoldLeggings, 700),
-		2 => new KitUpgradeInfo(new ChainLeggings, 3500),
-		3 => new KitUpgradeInfo(new IronLeggings, 17500, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondLeggings, 70000, Settings::RANK_IMPORTANCE_VIP),
+		1 => new KitUpgradeInfo(new GoldLeggings, 350),
+		2 => new KitUpgradeInfo(new ChainLeggings, 1750),
+		3 => new KitUpgradeInfo(new IronLeggings, 8750, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(new DiamondLeggings, 35000, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_BOOTS => [
 		0 => new KitUpgradeInfo(new LeatherBoots, 0),
-		1 => new KitUpgradeInfo(new GoldBoots, 400),
-		2 => new KitUpgradeInfo(new ChainBoots, 2000),
-		3 => new KitUpgradeInfo(new IronBoots, 10000, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondBoots, 40000, Settings::RANK_IMPORTANCE_VIP),
+		1 => new KitUpgradeInfo(new GoldBoots, 200),
+		2 => new KitUpgradeInfo(new ChainBoots, 1000),
+		3 => new KitUpgradeInfo(new IronBoots, 5000, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(new DiamondBoots, 20000, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_WEAPON => [
 		0 => new KitUpgradeInfo(new StoneSword, 0),
-		1 => new KitUpgradeInfo(new IronSword, 5000),
-		2 => new KitUpgradeInfo(new DiamondSword, 20000, Settings::RANK_IMPORTANCE_DONATOR),
+		1 => new KitUpgradeInfo(new IronSword, 2500),
+		2 => new KitUpgradeInfo(new DiamondSword, 10000, Settings::RANK_IMPORTANCE_DONATOR),
 	],
 	Settings::KIT_FOOD => [
 		0 => new KitUpgradeInfo(Item::get(Item::MELON_SLICE, 0, 64), 0),
-		1 => new KitUpgradeInfo(new Carrot(0, 64), 1000),
-		2 => new KitUpgradeInfo(new Apple(0, 64), 5000),
-		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 15000),
-		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN), 30000, Settings::RANK_IMPORTANCE_DONATOR),
-		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP), 50000, Settings::RANK_IMPORTANCE_VIP),
-		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE), 80000, Settings::RANK_IMPORTANCE_VIP_PLUS),
-	],
-	Settings::KIT_BOW => [
-		0 => new KitUpgradeInfo(Item::get(0), 0),
-		1 => new KitUpgradeInfo(new Bow, 5000),
+		1 => new KitUpgradeInfo(new Carrot(0, 64), 500),
+		2 => new KitUpgradeInfo(new Apple(0, 64), 2500),
+		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 7500),
+		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN), 15000, Settings::RANK_IMPORTANCE_DONATOR),
+		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP), 25000, Settings::RANK_IMPORTANCE_VIP),
+		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE), 40000, Settings::RANK_IMPORTANCE_VIP_PLUS),
 	],
 	Settings::KIT_ARROWS => [
 		0 => new KitUpgradeInfo(Item::get(0), 0),
-		1 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 8), 3000),   // +8
-		2 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 16), 8000),  // +8
-		3 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 32), 10000, Settings::RANK_IMPORTANCE_DONATOR),  // +16
-		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 20000),  // +16
-		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 40000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),  // +32
-		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 60000, Settings::RANK_IMPORTANCE_VIP), // +32
-		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 100000, Settings::RANK_IMPORTANCE_VIP_PLUS), // +64
-		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 1), // +64
+		1 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 8), 1500),   // +8
+		2 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 16), 4000),  // +8
+		3 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 32), 5000, Settings::RANK_IMPORTANCE_DONATOR),  // +16
+		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 10000),  // +16
+		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 20000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),  // +32
+		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 30000, Settings::RANK_IMPORTANCE_VIP), // +32
+		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 50000, Settings::RANK_IMPORTANCE_VIP_PLUS), // +64
+		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 100000), // +64
 	]
 ];
