@@ -285,20 +285,20 @@ class Settings{
 		$id = (int) $id;
 		$l = $server->getLevelByName("world_pvp");
 		$loc = new Location(151.5, 54, 0, 90, 0, $l);
-		if($id === 1){
+		if($id === 4){
 			$loc->z = 1.5;
 		}
 		elseif($id === 2){
 			$loc->z = -0.5;
 		}
-		elseif($id === 3){
-			$loc->z = 2.5;
+		elseif($id === 1){
+			$loc->z = -2.5;
 		}
-		elseif($id === 4){
-			$loc->z = 4.5;
+		elseif($id === 3){
+			$loc->z = -4.5;
 		}
 		elseif($id === 5){
-			$loc->z = 6.5;
+			$loc->z = -6.5;
 		}
 		else{
 			throw new \UnexpectedValueException("`" . var_export($id, true) . "`");
