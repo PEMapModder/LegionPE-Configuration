@@ -313,8 +313,8 @@ class Settings{
 			Settings::KIT_LEGGINGS => new Location(141.5, 54, -14.5, 0, 0, $level),
 			Settings::KIT_BOOTS => new Location(143.5, 54, -14.5, 0, 0, $level),
 			Settings::KIT_WEAPON => new Location(143.5, 54, 8.5, 180, 0, $level),
-			Settings::KIT_FOOD => new Location(139, 54, 9.5, 180, 0, $level),
-			Settings::KIT_ARROWS => new Location(135, 54, 9.5, 180, 0, $level),
+			Settings::KIT_FOOD => new Location(139.5, 54, 9.5, 180, 0, $level),
+			Settings::KIT_ARROWS => new Location(135.5, 54, 9.5, 180, 0, $level),
 		];
 	}
 	public static function kitpvp_getBowLocation(Server $server){
