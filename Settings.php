@@ -206,6 +206,12 @@ class Settings{
 		return 5;
 	}
 	public static function kitpvp_isSafeArea(Vector3 $pos){
+		$x = $pos->x;
+		$y = $pos->y;
+		$z = $pos->z;
+		if((127 <= $x) and ($x <= 152) and (-15 <= $z) and ($z <= 9) and ($y < 57)){
+			return true;
+		}
 		// 110, 149
 		// 11, -20
 		$x = $pos->getFloorX();
