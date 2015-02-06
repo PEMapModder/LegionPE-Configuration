@@ -394,15 +394,15 @@ Settings::$KITPVP_KITS = [
 		0 => new KitUpgradeInfo(new LeatherCap, 0),
 		1 => new KitUpgradeInfo(new GoldHelmet, 250),
 		2 => new KitUpgradeInfo(new ChainHelmet, 1250),
-		3 => new KitUpgradeInfo(new IronHelmet, 6250, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondHelmet, 25000, Settings::RANK_IMPORTANCE_VIP),
+		3 => new KitUpgradeInfo(new IronHelmet, 6000, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(new DiamondHelmet, 7500, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_CHESTPLATE => [
 		0 => new KitUpgradeInfo(new LeatherTunic, 0),
 		1 => new KitUpgradeInfo(new GoldChestplate, 400),
 		2 => new KitUpgradeInfo(new ChainChestplate, 2000),
-		3 => new KitUpgradeInfo(new IronChestplate, 10000, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondChestplate, 40000, Settings::RANK_IMPORTANCE_VIP),
+		3 => new KitUpgradeInfo(new IronChestplate, 5000, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(new DiamondChestplate, 7500, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_LEGGINGS => [
 		0 => new KitUpgradeInfo(new LeatherPants, 0),
@@ -416,17 +416,17 @@ Settings::$KITPVP_KITS = [
 		1 => new KitUpgradeInfo(new GoldBoots, 200),
 		2 => new KitUpgradeInfo(new ChainBoots, 1000),
 		3 => new KitUpgradeInfo(new IronBoots, 5000, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(new DiamondBoots, 20000, Settings::RANK_IMPORTANCE_VIP),
+		4 => new KitUpgradeInfo(new DiamondBoots, 7500, Settings::RANK_IMPORTANCE_VIP),
 	],
 	Settings::KIT_WEAPON => [
 		0 => new KitUpgradeInfo(new StoneSword, 0),
 		1 => new KitUpgradeInfo(new IronSword, 2500),
-		2 => new KitUpgradeInfo(new DiamondSword, 10000, Settings::RANK_IMPORTANCE_DONATOR),
+		2 => new KitUpgradeInfo(new DiamondSword, 7500, Settings::RANK_IMPORTANCE_DONATOR),
 	],
 	Settings::KIT_FOOD => [
 		0 => new KitUpgradeInfo(Item::get(Item::MELON_SLICE, 0, 64), 0),
 		1 => new KitUpgradeInfo(new Carrot(0, 64), 750),
-		2 => new KitUpgradeInfo(new Apple(0, 64), 5000),
+		2 => new KitUpgradeInfo(new Apple(0, 64), 2500),
 		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 8500, Settings::RANK_IMPORTANCE_DONATOR),
 		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN), 15000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),
 		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP), 25000, Settings::RANK_IMPORTANCE_VIP),
@@ -434,13 +434,13 @@ Settings::$KITPVP_KITS = [
 	],
 	Settings::KIT_ARROWS => [
 		0 => new KitUpgradeInfo(Item::get(0), 0),
-		1 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 8), 1500),   // +8
-		2 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 16), 4000),  // +8
-		3 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 32), 5000, Settings::RANK_IMPORTANCE_DONATOR),  // +16
-		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 10000),  // +16
-		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 20000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),  // +32
-		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 30000, Settings::RANK_IMPORTANCE_VIP), // +32
-		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 50000, Settings::RANK_IMPORTANCE_VIP_PLUS), // +64
-		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 100000), // +64
+		1 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 8), 500),   // +8
+		2 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 16), 750),  // +8
+		3 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 32), 1500, Settings::RANK_IMPORTANCE_DONATOR),  // +16
+		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 2500),  // +16
+//		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 20000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),  // +32
+//		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 30000, Settings::RANK_IMPORTANCE_VIP), // +32
+//		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 50000, Settings::RANK_IMPORTANCE_VIP_PLUS), // +64
+//		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 100000), // +64
 	]
 ];
