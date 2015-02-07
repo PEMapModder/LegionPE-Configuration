@@ -2,6 +2,7 @@
 
 namespace legionpe\config;
 
+use legionpe\games\spleef\SpleefArenaConfig;
 use legionpe\LegionPE;
 use legionpe\session\Session;
 use pocketmine\event\entity\EntityRegainHealthEvent;
@@ -386,6 +387,21 @@ class Settings{
 	}
 	public static function spleef_spawn(Server $server){
 		return $server->getLevelByName("world_spleef")->getSpawnLocation();
+	}
+	public static function spleef_arenaCnt(){
+		return 6;
+	}
+	public static function spleef_getArenaConfig($id){
+		$config = new SpleefArenaConfig;
+		$config->minPlayers = 2;
+		$config->maxGameTicks = 2400;
+		$config->maxWaitTicks = 1200;
+		$config->minWaitTicks = 200;
+		$config->floorHeight = 4;
+		switch($id){
+			// TODO: spleef coords
+		}
+		return $config;
 	}
 }
 
