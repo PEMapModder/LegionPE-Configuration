@@ -5,6 +5,7 @@ namespace legionpe\config;
 use legionpe\games\spleef\SpleefArenaConfig;
 use legionpe\LegionPE;
 use legionpe\session\Session;
+use pocketmine\block\Block;
 use pocketmine\event\entity\EntityRegainHealthEvent;
 use pocketmine\item\Apple;
 use pocketmine\item\Carrot;
@@ -21,6 +22,7 @@ use pocketmine\item\GoldBoots;
 use pocketmine\item\GoldChestplate;
 use pocketmine\item\GoldHelmet;
 use pocketmine\item\GoldLeggings;
+use pocketmine\item\GoldShovel;
 use pocketmine\item\IronBoots;
 use pocketmine\item\IronChestplate;
 use pocketmine\item\IronHelmet;
@@ -397,9 +399,147 @@ class Settings{
 		$config->maxGameTicks = 2400;
 		$config->maxWaitTicks = 1200;
 		$config->minWaitTicks = 200;
-		$config->floorHeight = 4;
+		$config->floorHeight = 4; // includes the block layer, so there are 3 layers of air actually
+		$config->playerItems = [new GoldShovel, new GoldShovel, new GoldShovel, new GoldShovel];
 		switch($id){
-			// TODO: spleef coords
+			case 1:
+				$config->name = "Arena 1";
+				$config->spectatorSpawnLoc = new Location();
+				$config->playerPrepLoc = new Location();
+				$config->playerStartLocs = [
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+				];
+				$config->radius = 16;
+				$config->floors = 3;
+				$config->floorHeight = 4;
+				$config->lowestCenter = new Position();
+				$config->floorMaterials = [
+					Block::get(Block::STAINED_CLAY, 1),
+					Block::get(Block::STAINED_CLAY, 7)
+				];
+				break;
+			case 2:
+				$config->name = "Arena 2";
+				$config->spectatorSpawnLoc = new Location();
+				$config->playerPrepLoc = new Location();
+				$config->playerStartLocs = [
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+				];
+				$config->radius = 16;
+				$config->floors = 3;
+				$config->floorHeight = 4;
+				$config->lowestCenter = new Position();
+				$config->floorMaterials = [
+					Block::get(Block::STAINED_CLAY, 1),
+					Block::get(Block::STAINED_CLAY, 7)
+				];
+				break;
+			case 3:
+				$config->name = "Arena 3";
+				$config->spectatorSpawnLoc = new Location();
+				$config->playerPrepLoc = new Location();
+				$config->playerStartLocs = [
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+				];
+				$config->radius = 16;
+				$config->floors = 3;
+				$config->floorHeight = 4;
+				$config->lowestCenter = new Position();
+				$config->floorMaterials = [
+					Block::get(Block::STAINED_CLAY, 1),
+					Block::get(Block::STAINED_CLAY, 7)
+				];
+				break;
+			case 4:
+				$config->name = "Arena 4";
+				$config->spectatorSpawnLoc = new Location();
+				$config->playerPrepLoc = new Location();
+				$config->playerStartLocs = [
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+				];
+				$config->radius = 16;
+				$config->floors = 3;
+				$config->floorHeight = 4;
+				$config->lowestCenter = new Position();
+				$config->floorMaterials = [
+					Block::get(Block::STAINED_CLAY, 1),
+					Block::get(Block::STAINED_CLAY, 7)
+				];
+				break;
+			case 5:
+				$config->name = "Arena 5";
+				$config->spectatorSpawnLoc = new Location();
+				$config->playerPrepLoc = new Location();
+				$config->playerStartLocs = [
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+				];
+				$config->radius = 16;
+				$config->floors = 3;
+				$config->floorHeight = 4;
+				$config->lowestCenter = new Position();
+				$config->floorMaterials = [
+					Block::get(Block::STAINED_CLAY, 1),
+					Block::get(Block::STAINED_CLAY, 7)
+				];
+				break;
+			case 6:
+				$config->name = "Arena 6";
+				$config->spectatorSpawnLoc = new Location();
+				$config->playerPrepLoc = new Location();
+				$config->playerStartLocs = [
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+					new Location(),
+				];
+				$config->radius = 16;
+				$config->floors = 3;
+				$config->floorHeight = 4;
+				$config->lowestCenter = new Position();
+				$config->floorMaterials = [
+					Block::get(Block::STAINED_CLAY, 1),
+					Block::get(Block::STAINED_CLAY, 7)
+				];
+				break;
 		}
 		return $config;
 	}
