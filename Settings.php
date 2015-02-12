@@ -120,35 +120,37 @@ class Settings{
 		}
 		return null;
 	}
-	public static function parkour_checkpoint_signs(Position $p, &$complete = false){
+	public static function parkour_checkpoint_signs(Position $p){
 		if($p->getLevel()->getName() !== "world_parkour"){
 			return -1;
 		}
 		$x = $p->getFloorX();
 		$y = $p->getFloorY();
 		$z = $p->getFloorZ();
-		if($y === 4){
-			if($x === 1567 and $z === -935){
+		if($y === 5){
+			if($x === 1567 and $z === -936){
 				return 1;
 			}
-			if($x === 1616 and $z === -1023){
+			if($x === 1616 and $z === -1024){
 				return 2;
 			}
-			if($x === 1652 and $z === -916){
+			if($x === 1652 and $z === -917){
 				return 3;
 			}
-			if($x === 1669 and $z === -827){
-				$complete = true;
+			if($x === 1669 and $z === -828){
 				return 4;
 			}
 		}
-		return 0;
+		if($x === 1741 and $y === 7 and $z === -915){
+			return 0;
+		}
+		return -1;
 	}
 	public static function parkour_checkpoint_startPos($id, Server $server){
 		$level = $server->getLevelByName("world_parkour");
 		switch($id){
 			case 0:
-				return new Position(1560, 5, -982, $level);
+				return new Position(1560.5, 5, -982.5, $level);
 			case 1:
 				return new Position(1600, 5, -956, $level);
 			case 2:
@@ -167,7 +169,7 @@ class Settings{
 				return false;
 			}
 		}
-		return $vector3->y < 1;
+		return $vector3->y < 1.5; // accept error up to 0.5
 	}
 	public static function parkour_spawnpoint(Server $server){
 		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
@@ -176,7 +178,7 @@ class Settings{
 //		foreach($server->getLevels() as $level){
 //			$server->getLogger()->debug("Level " . $level->getName() . " (" . $level->getFolderName() . ")");
 //		}
-		return $server->getLevelByName("world_pvp")->getSpawnLocation();
+		return new Position(123, 65, -3, $server->getLevelByName("world_pvp"));
 	}
 	public static function kitpvp_maxFriends($rank){
 		if($rank instanceof Session){
