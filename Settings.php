@@ -118,7 +118,6 @@ class Settings{
 			}
 		}
 		if((-95 <= $x) and ($x <= -89) and (7 <= $y) and ($y <= 13) and (466 <= $z) and ($z <= 468)){
-			$main->getLogger()->alert("Detected Parkour for $p");
 			return $main->getGame(Session::SESSION_GAME_PARKOUR);
 		}
 		return null;
@@ -588,10 +587,10 @@ Settings::$KITPVP_KITS = [
 		0 => new KitUpgradeInfo(Item::get(Item::MELON_SLICE, 0, 64), 0),
 		1 => new KitUpgradeInfo(new Carrot(0, 64), 750),
 		2 => new KitUpgradeInfo(new Apple(0, 64), 2500),
-		3 => new KitUpgradeInfo(Item::get(Item::BREAD), 8500, Settings::RANK_IMPORTANCE_DONATOR),
-		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN), 15000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),
-		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP), 25000, Settings::RANK_IMPORTANCE_VIP),
-		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE), 40000, Settings::RANK_IMPORTANCE_VIP_PLUS),
+		3 => new KitUpgradeInfo(Item::get(Item::BREAD, 0, 64), 8500, Settings::RANK_IMPORTANCE_DONATOR),
+		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN, 0, 64), 15000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),
+		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP, 0, 64), 25000, Settings::RANK_IMPORTANCE_VIP),
+		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE, 0, 64), 40000, Settings::RANK_IMPORTANCE_VIP_PLUS),
 	],
 	Settings::KIT_ARROWS => [
 		0 => new KitUpgradeInfo(Item::get(0), 0),
