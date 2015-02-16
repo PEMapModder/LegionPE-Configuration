@@ -88,6 +88,7 @@ class Settings{
 	const KIT_ARROWS = "arrows";
 	/** @var KitUpgradeInfo[][] */
 	public static $KITPVP_KITS = [];
+	public static $INFECTED_WORLDS = ["infected_base_1"];
 
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
@@ -546,6 +547,23 @@ class Settings{
 				break;
 		}
 		return $config;
+	}
+	public static function spleef_getType(Position $pos, &$arena, &$isSpectator){
+		$arena = -1;
+		if($pos->getLevel()->getName() !== "world_spleef"){
+			return;
+		}
+		// TODO
+	}
+	public static function spleef_isArenaFloor(Position $pos){
+		if($pos->getLevel()->getName() !== "world_spleef"){
+			return false;
+		}
+		// TODO
+		return false;
+	}
+	public static function infected_getRandomBaseWorld(){
+		return self::$INFECTED_WORLDS[mt_rand(0, count(self::$INFECTED_WORLDS) - 1)];
 	}
 }
 

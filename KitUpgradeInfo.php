@@ -3,7 +3,7 @@
 namespace legionpe\config;
 
 use legionpe\session\Session;
-use legionpe\utils\GrammarUtils;
+use legionpe\utils\MUtils;
 use pocketmine\item\Item;
 use pocketmine\utils\TextFormat;
 
@@ -51,7 +51,7 @@ class KitUpgradeInfo{
 		if($name === "Unknown"){
 			$name = $this->searchItemNameFromConsts($this->item->getId());
 		}
-		GrammarUtils::word_quantitize($name, $this->item->getCount());
+		MUtils::word_quantitize($name, $this->item->getCount());
 		return strtolower($name) . ($this->item->getDamage() === 0 ? "":" with damage value " . $this->item->getDamage());
 	}
 	public function canPurchase(Session $session){
