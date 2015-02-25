@@ -2,9 +2,9 @@
 
 namespace legionpe\config;
 
+use legionpe\games\spleef\SpleefArena;
 use legionpe\games\spleef\SpleefArenaConfig;
 use legionpe\LegionPE;
-use legionpe\LogCapacitor;
 use legionpe\session\Session;
 use pocketmine\block\Block;
 use pocketmine\event\entity\EntityRegainHealthEvent;
@@ -40,6 +40,7 @@ use pocketmine\level\Location;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Server;
+use pocketmine\tile\Sign;
 
 class Settings{
 	// ranks of importance (how important the person is, like VERY Important Person) must not exceed 15 according to this, 1 nibble
@@ -393,174 +394,272 @@ class Settings{
 		return true;
 	}
 	public static function spleef_spawn(Server $server){
-		return $server->getLevelByName("world_spleef")->getSpawnLocation();
+		return new Location(922, 10, -2, 270.0, 0.0, $server->getLevelByName("world_spleef"));
 	}
 	public static function spleef_arenaCnt(){
-		return 6;
+		return 4;
 	}
-	public static function spleef_getArenaConfig($id){
+	public static function spleef_getArenaConfig($id, Server $server){
+		$level = $server->getLevelByName("world_spleef");
 		$config = new SpleefArenaConfig;
 		$config->minPlayers = 2;
 		$config->maxGameTicks = 2400;
 		$config->maxWaitTicks = 1200;
 		$config->minWaitTicks = 200;
+		$config->floors = 1;
 		$config->floorHeight = 4; // includes the block layer, so there are 3 layers of air actually
+		$config->lowestY = 3;
 		$config->playerItems = [new GoldShovel, new GoldShovel, new GoldShovel, new GoldShovel];
+		$config->floorMaterials = [
+			Block::get(Block::SNOW_BLOCK)
+		];
 		switch($id){
 			case 1:
 				$config->name = "Arena 1";
-				$config->spectatorSpawnLoc = new Location();
-				$config->playerPrepLoc = new Location();
+				$config->spectatorSpawnLoc = new Location(925, 11, -40, 0.0, 90, $level);
+				$config->playerPrepLoc = new Location(925, 4.5, -40, 0.0, 90, $level);
 				$config->playerStartLocs = [
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
+					new Location(925, 4.5, -56, 0.0, 0.0, $level),
+					new Location(925, 4.5, -24, 180.0, 0.0, $level),
+					new Location(909, 4.5, -40, 270.0, 0.0, $level),
+					new Location(940, 4.5, -40, 90.0, 0.0, $level),
+					new Location(935, 4.5, -51, 45.0, 0.0, $level),
+					new Location(916, 4.5, -31, 225.0, 0.0, $level),
+					new Location(936, 4.5, -30, 135.0, 0.0, $level),
+					new Location(917, 4.5, -50, 315.0, 0.0, $level),
 				];
-				$config->radius = 16;
-				$config->floors = 3;
-				$config->floorHeight = 4;
-				$config->lowestCenter = new Position();
-				$config->floorMaterials = [
-					Block::get(Block::STAINED_CLAY, 1),
-					Block::get(Block::STAINED_CLAY, 7)
-				];
+				$config->fromx = 906;
+				$config->tox = 943;
+				$config->fromz = -59;
+				$config->toz = -21;
 				break;
 			case 2:
 				$config->name = "Arena 2";
-				$config->spectatorSpawnLoc = new Location();
-				$config->playerPrepLoc = new Location();
+				$config->spectatorSpawnLoc = new Location(966, 11, 0, 0.0, 90, $level);
+				$config->playerPrepLoc = new Location(966, 4.5, 0, 0.0, 90, $level);
 				$config->playerStartLocs = [
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
+					new Location(950, 4.5, 0, 270.0, 0.0, $level),
+					new Location(982, 4.5, 0, 90.0, 0.0, $level),
+					new Location(966, 4.5, -14, 0.0, 0.0, $level),
+					new Location(966, 4.5, 16, 180.0, 0.0, $level),
+					new Location(958, 4.5, -8, 315.0, 0.0, $level),
+					new Location(977, 4.5, 11, 135.0, 0.0, $level),
+					new Location(976, 4.5, -10, 45.0, 0.0, $level),
+					new Location(956, 4.5, 10, 225.0, 0.0, $level),
 				];
-				$config->radius = 16;
-				$config->floors = 3;
-				$config->floorHeight = 4;
-				$config->lowestCenter = new Position();
-				$config->floorMaterials = [
-					Block::get(Block::STAINED_CLAY, 1),
-					Block::get(Block::STAINED_CLAY, 7)
-				];
+				$config->fromx = 947;
+				$config->tox = 985;
+				$config->fromz = -18;
+				$config->toz = 19;
 				break;
 			case 3:
 				$config->name = "Arena 3";
-				$config->spectatorSpawnLoc = new Location();
-				$config->playerPrepLoc = new Location();
+				$config->spectatorSpawnLoc = new Location(925, 11, 42, 0.0, 90, $level);
+				$config->playerPrepLoc = new Location(925, 4.5, 42, 0.0, 90, $level);
 				$config->playerStartLocs = [
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
+					new Location(910, 4.5, 42, 270.0, 0.0, $level),
+					new Location(941, 4.5, 42, 90.0, 0.0, $level),
+					new Location(925, 4.5, 26, 0.0, 0.0, $level),
+					new Location(925, 4.5, 58, 180.0, 0.0, $level),
+					new Location(917, 4.5, 32, 315.0, 0.0, $level),
+					new Location(935, 4.5, 52, 135.0, 0.0, $level),
+					new Location(915, 4.5, 53, 225.0, 0.0, $level),
+					new Location(936, 4.5, 32, 45.0, 0.0, $level),
 				];
-				$config->radius = 16;
-				$config->floors = 3;
-				$config->floorHeight = 4;
-				$config->lowestCenter = new Position();
-				$config->floorMaterials = [
-					Block::get(Block::STAINED_CLAY, 1),
-					Block::get(Block::STAINED_CLAY, 7)
-				];
+				$config->fromx = 907;
+				$config->tox = 944;
+				$config->fromz = 23;
+				$config->toz = 61;
 				break;
 			case 4:
 				$config->name = "Arena 4";
-				$config->spectatorSpawnLoc = new Location();
-				$config->playerPrepLoc = new Location();
+				$config->spectatorSpawnLoc = new Location(884, 11, 1, 0.0, 90, $level);
+				$config->playerPrepLoc = new Location(884, 4.5, 1, 0.0, 90, $level);
 				$config->playerStartLocs = [
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
+					new Location(868, 4.5, 1, 270.0, 0.0, $level),
+					new Location(900, 4.5, 1, 90.0, 0.0, $level),
+					new Location(884, 4.5, 17, 180.0, 0.0, $level),
+					new Location(884, 4.5, -14, 0.0, 0.0, $level),
+					new Location(876, 4.5, 9, 225.0, 0.0, $level),
+					new Location(892, 4.5, -6, 45.0, 0.0, $level),
+					new Location(894, 4.5, 11, 135.0, 0.0, $level),
+					new Location(874, 4.5, -8, 315.0, 0.0, $level),
 				];
-				$config->radius = 16;
-				$config->floors = 3;
-				$config->floorHeight = 4;
-				$config->lowestCenter = new Position();
-				$config->floorMaterials = [
-					Block::get(Block::STAINED_CLAY, 1),
-					Block::get(Block::STAINED_CLAY, 7)
-				];
-				break;
-			case 5:
-				$config->name = "Arena 5";
-				$config->spectatorSpawnLoc = new Location();
-				$config->playerPrepLoc = new Location();
-				$config->playerStartLocs = [
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-				];
-				$config->radius = 16;
-				$config->floors = 3;
-				$config->floorHeight = 4;
-				$config->lowestCenter = new Position();
-				$config->floorMaterials = [
-					Block::get(Block::STAINED_CLAY, 1),
-					Block::get(Block::STAINED_CLAY, 7)
-				];
-				break;
-			case 6:
-				$config->name = "Arena 6";
-				$config->spectatorSpawnLoc = new Location();
-				$config->playerPrepLoc = new Location();
-				$config->playerStartLocs = [
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-					new Location(),
-				];
-				$config->radius = 16;
-				$config->floors = 3;
-				$config->floorHeight = 4;
-				$config->lowestCenter = new Position();
-				$config->floorMaterials = [
-					Block::get(Block::STAINED_CLAY, 1),
-					Block::get(Block::STAINED_CLAY, 7)
-				];
+				$config->fromx = 865;
+				$config->tox = 903;
+				$config->fromz = -17;
+				$config->toz = 20;
 				break;
 		}
 		return $config;
 	}
-	public static function spleef_getType(Position $pos, &$arena, &$isSpectator){
+	public static function spleef_getType(Position $pos, &$arena, &$spectator){
 		$arena = -1;
 		if($pos->getLevel()->getName() !== "world_spleef"){
 			return;
 		}
-		// TODO
+		if($pos->y === 11){
+			if($pos->z === -16){
+				if((923 <= $pos->x) and ($pos->x <= 926)){
+					$arena = 1;
+					$spectator = 0;
+					return;
+				}
+				if((928 <= $pos->x) and ($pos->x <= 931)){
+					$arena = 1;
+					$spectator = 1;
+					return;
+				}
+			}
+			if($pos->x === 942){
+				if((-1 <= $pos->z) and ($pos->z <= 2)){
+					$arena = 2;
+					$spectator = 0;
+					return;
+				}
+				if((3 <= $pos->z) and ($pos->z <= 6)){
+					$arena = 2;
+					$spectator = 1;
+					return;
+				}
+			}
+			if($pos->z === 18){
+				if((925 <= $pos->x) and ($pos->x <= 928)){
+					$arena = 3;
+					$spectator = 0;
+					return;
+				}
+				if((919 <= $pos->x) and ($pos->x <= 922)){
+					$arena = 3;
+					$spectator = 1;
+					return;
+				}
+			}
+			if($pos->x === 908){
+				if((3 <= $pos->z) and ($pos->z <= 6)){
+					$arena = 4;
+					$spectator = 0;
+					return;
+				}
+				if((-3 <= $pos->z) and ($pos->z <= 0)){
+					$arena = 4;
+					$spectator = 1;
+					return;
+				}
+			}
+			if($pos->z === -20){
+				if((923 <= $pos->x) and ($pos->x <= 931)){
+					$arena = 1;
+					$spectator = 2;
+					return;
+				}
+			}
+			if($pos->x === 946){
+				if((-1 <= $pos->z) and ($pos->z <= 6)){
+					$arena = 2;
+					$spectator = 2;
+					return;
+				}
+			}
+			if($pos->z === 22){
+				if((919 <= $pos->x) and ($pos->x <= 928)){
+					$arena = 3;
+					$spectator = 2;
+					return;
+				}
+			}
+			if($pos->x === 904){
+				if((-3 <= $pos->z) and ($pos->z <= 6)){
+					$arena = 4;
+					$spectator = 2;
+					return;
+				}
+			}
+		}
 	}
 	public static function spleef_isArenaFloor(Position $pos){
 		if($pos->getLevel()->getName() !== "world_spleef"){
 			return false;
 		}
-		// TODO
-		return false;
+		return ($pos->y === 3) and ($pos->getLevel()->getBlock($pos)->getId() === Block::SNOW_BLOCK);
+	}
+	public static function spleef_updateArenaSigns(SpleefArena $arena){
+		$level = $arena->getGame()->getMain()->getServer()->getLevelByName("world_spleef");
+		$cnt = $arena->countPlayers();
+		$max = $arena->getConfig()->getMaxPlayers();
+		if(!$arena->isPlaying()){
+			$full = $cnt === $max;
+			$texts = [
+				$arena->getConfig()->name,
+				$full ? "[FULL]":"[JOIN]",
+				"$cnt / $max"
+			];
+		}
+		else{
+			$texts = [
+				$arena->getConfig()->name,
+				"[PLAYING]",
+				"$cnt / $max"
+			];
+		}
+		switch($arena->getId()){
+			case 1:
+				for($x = 923; $x <= 926; $x++){
+					$tile = $level->getTile(new Vector3($x, 11, -16));
+					if($tile instanceof Sign){
+						$tile->setText(...$texts);
+					}
+				}
+				for($x = 928; $x <= 931; $x++){
+					$tile = $level->getTile(new Vector3($x, 11, -16));
+					if($tile instanceof Sign){
+						$tile->setText($texts[0], "[SPECTATE]", $texts[2]);
+					}
+				}
+				break;
+			case 2:
+				for($z = -1; $z <= 3; $z++){
+					$tile = $level->getTile(new Vector3(942, 11, $z));
+					if($tile instanceof Sign){
+						$tile->setText(...$texts);
+					}
+				}
+				for($z = 4; $z <= 8; $z++){
+					$tile = $level->getTile(new Vector3(942, 11, $z));
+					if($tile instanceof Sign){
+						$tile->setText($texts[0], "[SPECTATE]", $texts[2]);
+					}
+				}
+				break;
+			case 3:
+				for($x = 925; $x <= 928; $x++){
+					$tile = $level->getTile(new Vector3($x, 11, 18));
+					if($tile instanceof Sign){
+						$tile->setText(...$texts);
+					}
+				}
+				for($x = 919; $x <= 922; $x++){
+					$tile = $level->getTile(new Vector3($x, 11, 18));
+					if($tile instanceof Sign){
+						$tile->setText($texts[0], "[SPECTATE]", $texts[2]);
+					}
+				}
+				break;
+			case 4:
+				for($z = 3; $z <= 6; $z++){
+					$tile = $level->getTile(new Vector3(908, 11, $z));
+					if($tile instanceof Sign){
+						$tile->setText(...$texts);
+					}
+				}
+				for($x = -3; $x <= 0; $x++){
+					$tile = $level->getTile(new Vector3(908, 11, $z));
+					if($tile instanceof Sign){
+						$tile->setText($texts[0], "[SPECTATE]", $texts[2]);
+					}
+				}
+				break;
+		}
 	}
 	public static function infected_getRandomBaseWorld(){
 		return self::$INFECTED_WORLDS[mt_rand(0, count(self::$INFECTED_WORLDS) - 1)];
