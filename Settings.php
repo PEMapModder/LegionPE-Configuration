@@ -294,7 +294,7 @@ class Settings{
 			$session->getPlayer()->heal(4, EntityRegainHealthEvent::CAUSE_CUSTOM);
 			return;
 		}
-		$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
+		$session->getPlayer()->heal(2, EntityRegainHealthEvent::CAUSE_CUSTOM);
 	}
 	public static function kitpvp_getNpcLocation(Server $server, $id){
 		$id = (int) $id;
@@ -348,24 +348,17 @@ class Settings{
 				return [0, "nihil (nothing)", "The art of Taoism: doing nothing. Don't leave spawn, that's how you keep your deaths from increasing.", 0, 0, 0];
 			case 1:
 				return [1500, "Wooden Bow", "The basic wood holds the key to everything, from the basic crafting table to the tip of the majestic diamond sword.", 6, 0, 0];
-//			case 2:
-//				return [5000, "Ghast Bone Bow", "The elastic ghast bone magnifies the power of ranged fighting, making ghasts one of the horrors in the Nether.", 8, 0, 0];
-//			case 3:
-//				return [12500, "Blaze Rod Bow", "Blaze rods build up the essence of fire, so its effect is still significant in the overworld where fire can be extinguished.", 9, 70, 0];
-//			case 4:
-//				return [30000, "Enderdragon Rib Bow", "The throned enderdragon rib is the tool that knocked numerous players into the void. Shall it be your tool?", 10, 80, 20];
+			case 2:
+				return [5000, "Ghast Bone Bow", "The elastic ghast bone magnifies the power of ranged fighting, making ghasts one of the horrors in the Nether.", 8, 0, 0];
+			case 3:
+				return [12500, "Blaze Rod Bow", "Blaze rods build up the essence of fire, so its effect is still significant in the overworld where fire can be extinguished.", 9, 70, 0];
+			case 4:
+				return [30000, "Enderdragon Rib Bow", "The throned enderdragon rib is the tool that knocked numerous players into the void. Shall it be your tool?", 10, 80, 20];
 		}
 		return [PHP_INT_MAX, "You Guess?", "Uncertainty is a powerful weapon. Sadly, there are no potions of uncertainty in Minecraft.", 0, 0, 0];
 	}
 	public static function kitpvp_maxLevel($column){
 		return max(array_keys(self::$KITPVP_KITS[$column]));
-	}
-	public static function defaultTeamLimit(){
-		return 3;
-	}
-	public static function shiftTeamLimit($number){
-		$number &= 0x0F;
-		return $number << 20;
 	}
 	public static function getGameByLevel(Level $level, LegionPE $main){
 		switch($level->getName()){
@@ -714,10 +707,10 @@ Settings::$KITPVP_KITS = [
 		1 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 8), 500),   // +8
 		2 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 16), 750),  // +8
 		3 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 32), 1500, Settings::RANK_IMPORTANCE_DONATOR),  // +16
-		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 2500),  // +16
-//		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 20000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),  // +32
-//		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 30000, Settings::RANK_IMPORTANCE_VIP), // +32
-//		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 50000, Settings::RANK_IMPORTANCE_VIP_PLUS), // +64
-//		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 100000), // +64
+		4 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 64), 2500, Settings::RANK_IMPORTANCE_DONATOR_PLUS),  // +16
+		5 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 96), 20000),  // +32
+		6 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 128), 30000, Settings::RANK_IMPORTANCE_VIP), // +32
+		7 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 192), 50000, Settings::RANK_IMPORTANCE_VIP_PLUS), // +64
+		8 => new KitUpgradeInfo(Item::get(Item::ARROW, 0, 256), 100000), // +64
 	]
 ];
