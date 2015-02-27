@@ -124,6 +124,20 @@ class Settings{
 		}
 		return null;
 	}
+	public static function coinsFactor($rank){
+		switch($rank & self::RANK_SECTOR_IMPORTANCE){
+			case self::RANK_IMPORTANCE_VIP_PLUS:
+				return 4;
+			case self::RANK_IMPORTANCE_VIP:
+				return 3;
+			case self::RANK_IMPORTANCE_DONATOR_PLUS:
+				return 2;
+			case self::RANK_IMPORTANCE_DONATOR:
+				return 1.5;
+			default:
+				return 1;
+		}
+	}
 	public static function parkour_checkpoint_signs(Position $p){
 		if($p->getLevel()->getName() !== "world_parkour"){
 			return -1;
@@ -691,7 +705,7 @@ Settings::$KITPVP_KITS = [
 	Settings::KIT_WEAPON => [
 		0 => new KitUpgradeInfo(new StoneSword, 0),
 		1 => new KitUpgradeInfo(new IronSword, 2500),
-		2 => new KitUpgradeInfo(new DiamondSword, 7500, Settings::RANK_IMPORTANCE_DONATOR),
+		2 => new KitUpgradeInfo(new DiamondSword, 7500, Settings::RANK_IMPORTANCE_DONATOR_PLUS),
 	],
 	Settings::KIT_FOOD => [
 		0 => new KitUpgradeInfo(Item::get(Item::MELON_SLICE, 0, 64), 0),
@@ -700,7 +714,7 @@ Settings::$KITPVP_KITS = [
 		3 => new KitUpgradeInfo(Item::get(Item::BREAD, 0, 64), 8500, Settings::RANK_IMPORTANCE_DONATOR),
 		4 => new KitUpgradeInfo(Item::get(Item::COOKED_CHICKEN, 0, 64), 15000, Settings::RANK_IMPORTANCE_DONATOR_PLUS),
 		5 => new KitUpgradeInfo(Item::get(Item::COOKED_PORKCHOP, 0, 64), 25000, Settings::RANK_IMPORTANCE_VIP),
-		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE, 0, 64), 40000, Settings::RANK_IMPORTANCE_VIP_PLUS),
+//		6 => new KitUpgradeInfo(Item::get(Item::GOLDEN_APPLE, 0, 64), 40000, Settings::RANK_IMPORTANCE_VIP_PLUS),
 	],
 	Settings::KIT_ARROWS => [
 		0 => new KitUpgradeInfo(Item::get(0), 0),
