@@ -127,9 +127,9 @@ class Settings{
 	public static function coinsFactor($rank){
 		switch($rank & self::RANK_SECTOR_IMPORTANCE){
 			case self::RANK_IMPORTANCE_VIP_PLUS:
-				return 4;
-			case self::RANK_IMPORTANCE_VIP:
 				return 3;
+			case self::RANK_IMPORTANCE_VIP:
+				return 2.5;
 			case self::RANK_IMPORTANCE_DONATOR_PLUS:
 				return 2;
 			case self::RANK_IMPORTANCE_DONATOR:
