@@ -404,7 +404,7 @@ class Settings{
 					self::RANK_IMPORTANCE_VIP
 				];
 		}
-		return [PHP_INT_MAX, "You Guess?", "Uncertainty is a powerful weapon. Sadly, there are no potions of uncertainty in Minecraft.", 0, 0, 0];
+		return [PHP_INT_MAX, "You Guess?", "Uncertainty is a powerful weapon. Sadly, there are no potions of uncertainty in Minecraft.", 0, 0, 0, PHP_INT_MAX];
 	}
 	public static function kitpvp_maxLevel($column){
 		return max(array_keys(self::$KITPVP_KITS[$column]));
