@@ -359,15 +359,44 @@ class Settings{
 	public static function kitpvp_getBowInfo($newLevel){
 		switch($newLevel){
 			case 0:
-				return [0, "nihil (nothing)", "The art of Taoism: doing nothing. Don't leave spawn, that's how you keep your deaths from increasing.", 0, 0, 0];
+				return [
+					0,
+					"nihil (nothing)",
+					"The art of Taoism: doing nothing. Don't leave spawn, that's how you keep " .
+					"your deaths from increasing.",
+					0, 0, 0
+				];
 			case 1:
-				return [1500, "Wooden Bow", "The basic wood holds the key to everything, from the basic crafting table to the tip of the majestic diamond sword.", 6, 0, 0];
+				return [
+					1500,
+					"Wooden Bow",
+					"The basic wood holds the key to everything, from the basic crafting table " .
+					"to the tip of the majestic diamond sword.",
+					6, 0, 0
+				];
 			case 2:
-				return [5000, "Ghast Bone Bow", "The elastic ghast bone magnifies the power of ranged fighting, making ghasts one of the horrors in the Nether.", 8, 0, 0];
+				return [
+					5000,
+					"Ghast Bone Bow",
+					"The elastic ghast bone magnifies the power of ranged fighting, making " .
+					"ghasts one of the horrors in the Nether.",
+					8, 0, 0
+				];
 			case 3:
-				return [12500, "Blaze Rod Bow", "Blaze rods build up the essence of fire, so its effect is still significant in the overworld where fire can be extinguished.", 9, 70, 0];
+				return [
+					12500,
+					"Blaze Rod Bow",
+					"Blaze rods build up the essence of fire, so its effect is still " .
+					"significant in the overworld where fire can be extinguished.",
+					9, 50, 0
+				];
 			case 4:
-				return [30000, "Enderdragon Rib Bow", "The throned enderdragon rib is the tool that knocked numerous players into the void. Shall it be your tool?", 10, 80, 20];
+				return [30000,
+					"Ender Rib Bow",
+					"The throned enderdragon rib is the tool that knocked numerous players " .
+					"into the void. Shall it be your weapon?",
+					10, 80, 20
+				];
 		}
 		return [PHP_INT_MAX, "You Guess?", "Uncertainty is a powerful weapon. Sadly, there are no potions of uncertainty in Minecraft.", 0, 0, 0];
 	}
