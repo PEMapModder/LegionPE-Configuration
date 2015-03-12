@@ -435,6 +435,22 @@ class Settings{
 		}
 		return true;
 	}
+	public static function team_maxCapacity($rank){
+		if($rank & self::RANK_PERM_ADMIN){
+			return PHP_INT_MAX;
+		}
+		switch($rank & self::RANK_SECTOR_IMPORTANCE){
+			case self::RANK_IMPORTANCE_VIP_PLUS:
+				return 20;
+			case self::RANK_IMPORTANCE_VIP:
+				return 15;
+			case self::RANK_IMPORTANCE_DONATOR_PLUS:
+				return 10;
+			case self::RANK_IMPORTANCE_DONATOR:
+				return 5;
+		}
+		return 0;
+	}
 	public static function spleef_spawn(Server $server){
 		return new Location(922, 10, -2, 270.0, 0.0, $server->getLevelByName("world_spleef"));
 	}
