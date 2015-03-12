@@ -68,7 +68,7 @@ class Settings{
 	const RANK_PERM_WORLD_EDIT =            0x0400; // 1024
 	/** Permission to execute raw PHP code by `/eval` */
 	const RANK_PERM_DEV =                   0x0800; // 2048
-	const RANK_SECTOR_PERMISSION =          0x0FF0;
+	const RANK_SECTOR_PERMISSION =          0x00F0;
 
 	// precise (generally won't affect the program) degree of rank, 2 bits
 	const RANK_PREC_STD =                   0x0000;
@@ -205,15 +205,14 @@ class Settings{
 		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_OWNER){
 			return PHP_INT_MAX;
 		}
-		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_STAR){
-			return 25;
-		}
 		if(($rank & self::RANK_SECTOR_PERMISSION) === self::RANK_PERM_ADMIN){
 			return 25;
 		}
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_PLUS){
 			return 25;
 		}
+		var_dump($rank);
+		var_dump($rank & self::RANK_SECTOR_PERMISSION);
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP){
 			return 20;
 		}
