@@ -142,13 +142,7 @@ class Settings{
 		}
 	}
 	public static function getGrindDuration(Session $session){
-		if($session->getRank() & self::RANK_IMPORTANCE_VIP_PLUS){
-			return 7200;
-		}
 		if($session->getRank() & self::RANK_IMPORTANCE_VIP){
-			return 5400;
-		}
-		if($session->getRank() & self::RANK_IMPORTANCE_DONATOR_PLUS){
 			return 3600;
 		}
 		if($session->getRank() & self::RANK_IMPORTANCE_DONATOR){
