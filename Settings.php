@@ -51,7 +51,6 @@ class Settings{
 	const RANK_IMPORTANCE_DONATOR_PLUS =    0x0005; // 5  , 0101
 	const RANK_IMPORTANCE_VIP =             0x000C; // 12 , 1100
 	const RANK_IMPORTANCE_VIP_PLUS =        0x000D; // 13 , 1101
-	const RANK_IMPORTANCE_VIP_STAR =        0x000D; // 14 , 1101
 	const RANK_SECTOR_IMPORTANCE =          0x000F;
 
 	// permissions the rank has, 2 nibbles
@@ -341,7 +340,7 @@ class Settings{
 		}
 		$perm = $rank & self::RANK_SECTOR_PERMISSION;
 		$imptc = $rank & self::RANK_SECTOR_IMPORTANCE;
-		if($perm === self::RANK_PERM_OWNER or $imptc === self::RANK_IMPORTANCE_VIP_STAR){
+		if($perm === self::RANK_PERM_OWNER){
 			return 5;
 		}
 		if($perm === self::RANK_PERM_ADMIN or $imptc === self::RANK_IMPORTANCE_VIP_PLUS){
