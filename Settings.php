@@ -124,7 +124,11 @@ class Settings{
 		}
 		return null;
 	}
-	public static function coinsFactor($rank){
+	public static function coinsFactor(Session $session, $force = false){
+		if(!$session->isGrindingCoins() and !$force){
+			return 1;
+		}
+		$rank = $session->getRank();
 		switch($rank & self::RANK_SECTOR_IMPORTANCE){
 			case self::RANK_IMPORTANCE_VIP_PLUS:
 				return 3;
@@ -137,6 +141,72 @@ class Settings{
 			default:
 				return 1;
 		}
+	}
+	public static function getGrindDuration(Session $session){
+		if($session->getRank() & self::RANK_IMPORTANCE_VIP_PLUS){
+			return 7200;
+		}
+		if($session->getRank() & self::RANK_IMPORTANCE_VIP){
+			return 5400;
+		}
+		if($session->getRank() & self::RANK_IMPORTANCE_DONATOR_PLUS){
+			return 3600;
+		}
+		if($session->getRank() & self::RANK_IMPORTANCE_DONATOR){
+			return 1800;
+		}
+		return 0;
+	}
+	public static function getGrindActivationWaiting(Session $session){
+		if($session->getRank() & self::RANK_IMPORTANCE_VIP){
+			return 172800;
+		}
+		if($session->getRank() & self::RANK_IMPORTANCE_DONATOR){
+			return 259200;
+		}
+		return PHP_INT_MAX;
+	}
+	public static function getGameByLevel(Level $level, LegionPE $main){
+		switch($level->getName()){
+			case "world_pvp":
+				return $main->getGame(Session::SESSION_GAME_KITPVP);
+			case "world_parkour":
+				return $main->getGame(Session::SESSION_GAME_PARKOUR);
+			case "world_spleef":
+				return $main->getGame(Session::SESSION_GAME_SPLEEF);
+			case "world_infected":
+				return $main->getGame(Session::SESSION_GAME_INFECTED);
+		}
+		return null;
+	}
+	public static function equals(Position $init, Position... $poss){
+		$x = $init->x;
+		$y = $init->y;
+		$z = $init->z;
+		$lev = $init->getLevel()->getName();
+		/** @var Position[] $poss */
+		foreach($poss as $pos){
+			if($pos->x !== $x or $pos->y !== $y or $pos->z = $z or $pos->getLevel()->getName() !== $lev){
+				return false;
+			}
+		}
+		return true;
+	}
+	public static function team_maxCapacity($rank){
+		if($rank & self::RANK_PERM_ADMIN){
+			return PHP_INT_MAX;
+		}
+		switch($rank & self::RANK_SECTOR_IMPORTANCE){
+			case self::RANK_IMPORTANCE_VIP_PLUS:
+				return 20;
+			case self::RANK_IMPORTANCE_VIP:
+				return 15;
+			case self::RANK_IMPORTANCE_DONATOR_PLUS:
+				return 10;
+			case self::RANK_IMPORTANCE_DONATOR:
+				return 5;
+		}
+		return 0;
 	}
 	public static function parkour_checkpoint_signs(Position $p){
 		if($p->getLevel()->getName() !== "world_parkour"){
@@ -211,8 +281,6 @@ class Settings{
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP_PLUS){
 			return 25;
 		}
-		var_dump($rank);
-		var_dump($rank & self::RANK_SECTOR_PERMISSION);
 		if(($rank & self::RANK_SECTOR_IMPORTANCE) === self::RANK_IMPORTANCE_VIP){
 			return 20;
 		}
@@ -352,8 +420,8 @@ class Settings{
 		return self::$KITPVP_KITS[$column][$level];
 	}
 	/**
-	 * @param $newLevel
-	 * @return array <code>[int price, string name, string description, short damage, int fire aspect duration ticks, double knockback magnitude]</code>
+	 * @param int $newLevel
+	 * @return number[] {@code [int price, string name, string description, short damage, int fire aspect duration ticks, double knockback magnitude]}
 	 */
 	public static function kitpvp_getBowInfo($newLevel){
 		switch($newLevel){
@@ -407,48 +475,6 @@ class Settings{
 	}
 	public static function kitpvp_maxLevel($column){
 		return max(array_keys(self::$KITPVP_KITS[$column]));
-	}
-	public static function getGameByLevel(Level $level, LegionPE $main){
-		switch($level->getName()){
-			case "world_pvp":
-				return $main->getGame(Session::SESSION_GAME_KITPVP);
-			case "world_parkour":
-				return $main->getGame(Session::SESSION_GAME_PARKOUR);
-			case "world_spleef":
-				return $main->getGame(Session::SESSION_GAME_SPLEEF);
-			case "world_infected":
-				return $main->getGame(Session::SESSION_GAME_INFECTED);
-		}
-		return null;
-	}
-	public static function equals(Position $init, Position... $poss){
-		$x = $init->x;
-		$y = $init->y;
-		$z = $init->z;
-		$lev = $init->getLevel()->getName();
-		/** @var Position[] $poss */
-		foreach($poss as $pos){
-			if($pos->x !== $x or $pos->y !== $y or $pos->z = $z or $pos->getLevel()->getName() !== $lev){
-				return false;
-			}
-		}
-		return true;
-	}
-	public static function team_maxCapacity($rank){
-		if($rank & self::RANK_PERM_ADMIN){
-			return PHP_INT_MAX;
-		}
-		switch($rank & self::RANK_SECTOR_IMPORTANCE){
-			case self::RANK_IMPORTANCE_VIP_PLUS:
-				return 20;
-			case self::RANK_IMPORTANCE_VIP:
-				return 15;
-			case self::RANK_IMPORTANCE_DONATOR_PLUS:
-				return 10;
-			case self::RANK_IMPORTANCE_DONATOR:
-				return 5;
-		}
-		return 0;
 	}
 	public static function spleef_spawn(Server $server){
 		return new Location(922, 10, -2, 270.0, 0.0, $server->getLevelByName("world_spleef"));
