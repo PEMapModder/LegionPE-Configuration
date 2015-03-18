@@ -79,6 +79,8 @@ class Settings{
 	/** Here you are, the youtuber rank */
 	const RANK_DECOR_YOUTUBER =             0x4000;
 	const RANK_SECTOR_DECOR =              0xC000;
+
+	// kit sections
 	const KIT_HELMET = "helmet";
 	const KIT_CHESTPLATE = "chestplate";
 	const KIT_LEGGINGS = "leggings";
@@ -152,10 +154,10 @@ class Settings{
 	}
 	public static function getGrindActivationWaiting(Session $session){
 		if($session->getRank() & self::RANK_IMPORTANCE_VIP){
-			return 172800;
+			return 129600;
 		}
 		if($session->getRank() & self::RANK_IMPORTANCE_DONATOR){
-			return 259200;
+			return 216000;
 		}
 		return PHP_INT_MAX;
 	}
