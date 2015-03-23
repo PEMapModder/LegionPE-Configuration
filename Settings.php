@@ -257,6 +257,33 @@ class Settings{
 	public static function parkour_spawnpoint(Server $server){
 		return new Position(1560, 8, -982, $server->getLevelByName("world_parkour"));
 	}
+	public static function parkour_teleportSign(Vector3 $v3){
+		if($v3->x === 1569 and $v3->y === 5 and $v3->z === -932){
+			return [
+				new Vector3(1573, 5, -928),
+				new Vector3(1582, 5, -923),
+				new Vector3(1502, 5, -929),
+				new Vector3(1598, 5, -939),
+				new Vector3(1600, 5, -956)
+			];
+		}
+		elseif($v3->x === 1619 and $v3->y === 5 and $v3->z === -1027){
+			return [
+				new Vector3(1626, 5, -1029),
+				new Vector3(1636, 5, -1026),
+				new Vector3(1646, 5, -1017),
+				new Vector3(1655, 5, -1004),
+				new Vector3(1658, 5, -996),
+			];
+		}
+		elseif($v3->x === 1673 and $v3->y === 5 and $v3->z === -826){
+			return [
+				new Vector3(1697, 5, -825),
+				new Vector3(1713, 5, -839)
+			];
+		}
+		return null;
+	}
 	public static function kitpvp_spawn(Server $server){
 //		foreach($server->getLevels() as $level){
 //			$server->getLogger()->debug("Level " . $level->getName() . " (" . $level->getFolderName() . ")");
