@@ -766,6 +766,19 @@ class Settings{
 				break;
 		}
 	}
+	/**
+	 * @param Position $pos
+	 * @return Vector3[]|null
+	 */
+	public static function spleef_incineratorInfo(Position $pos){
+		if($pos->getLevel()->getName() !== "world_spleef"){
+			return null;
+		}
+		if($pos->getLevel()->getName() === "world_spleef" and ($pos->x === 936 and $pos->z === -12 or $pos->x === 934 and $pos->z === -14) and ($pos->y === 11 or $pos->y === 12)){
+			return [new Vector3(937, 12, -14), new Vector3(937, 22, -14)];
+		}
+		return null;
+	}
 	public static function infected_getRandomBaseWorld(){
 		return self::$INFECTED_WORLDS[mt_rand(0, count(self::$INFECTED_WORLDS) - 1)];
 	}
