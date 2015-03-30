@@ -782,6 +782,25 @@ class Settings{
 	public static function infected_getRandomBaseWorld(){
 		return self::$INFECTED_WORLDS[mt_rand(0, count(self::$INFECTED_WORLDS) - 1)];
 	}
+	public static function easter_getSnowballCount($rank){
+		if($rank instanceof Session){
+			$rank = $rank->getRank();
+		}
+		$imporatnce = $rank & self::RANK_SECTOR_IMPORTANCE;
+		if($imporatnce === self::RANK_IMPORTANCE_VIP_PLUS){
+			return 20;
+		}
+		if($imporatnce === self::RANK_IMPORTANCE_VIP){
+			return 18;
+		}
+		if($imporatnce === self::RANK_IMPORTANCE_DONATOR_PLUS){
+			return 16;
+		}
+		if($imporatnce === self::RANK_IMPORTANCE_DONATOR){
+			return 12;
+		}
+		return 8;
+	}
 }
 
 Settings::$KITPVP_KITS = [
