@@ -39,6 +39,7 @@ use pocketmine\level\Level;
 use pocketmine\level\Location;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
+use pocketmine\Player;
 use pocketmine\Server;
 use pocketmine\tile\Sign;
 
@@ -102,14 +103,13 @@ class Settings{
 	public static function loginSpawn(Server $server){
 		return $server->getLevelByName("world")->getSpawnLocation();
 	}
-	public static function portal(Position $p, LegionPE $main /* , Session $session*/ ){
+	public static function portal(Player $p, LegionPE $main){
 		if($p->getLevel()->getName() !== "world"){
 			return null;
 		}
 		$x = $p->x;
 		$y = $p->y;
 		$z = $p->z;
-//		LogCapacitor::log($main->getLogger(), __FILE__ . __LINE__, "Detecting portal for $x, $y, $z");
 		if((7 <= $y) and ($y <= 13) and (426 <= $z) and ($z <= 430)){
 			if(-53 <= $x and $x <= -52){
 //				$main->getLogger()->alert("Detected KitPvP for $p");
@@ -124,6 +124,27 @@ class Settings{
 			return $main->getGame(Session::SESSION_GAME_PARKOUR);
 		}
 		return null;
+	}
+	public static function portalBoost(Player $p, Block $block){
+		list($x, $y, $z) = [$block->x, $block->y, $block->z];
+		if($y === 7){
+			if(($x === -79) and ($z === 428)){
+				$p->sendMessage("Boosting!");
+				$p->setMotion((new Vector3(-61.5, 6, 428.5))->subtract($p)->divide(3));
+			}
+			if(($x === -92) and ($z === 441)){
+				$p->sendMessage("Boosting!");
+				$p->setMotion((new Vector3(-91.5, 6, 463.5))->subtract($p)->divide(3));
+			}
+			if(($x === -105) and ($z === 428)){
+				$p->sendMessage("Boosting!");
+				$p->setMotion((new Vector3(-126.5, 6, 428.5))->subtract($p)->divide(3));
+			}
+			if(($x === -92) and ($z === 415)){
+				$p->sendMessage("Boosting!");
+				$p->setMotion((new Vector3(-91.5, 6, 463.5))->subtract($p)->divide(3));
+			}
+		}
 	}
 	public static function coinsFactor(Session $session, $force = false){
 		if(!$session->isGrindingCoins() and !$force){
