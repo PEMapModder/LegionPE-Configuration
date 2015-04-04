@@ -129,20 +129,25 @@ class Settings{
 		list($x, $y, $z) = [$block->x, $block->y, $block->z];
 		if($y === 7){
 			if(($x === -79) and ($z === 428)){
-				$p->sendMessage("Boosting!");
-				$p->setMotion((new Vector3(-61.5, 6, 428.5))->subtract($p)->divide(3));
+				$tp = new Vector3(-80.5, 8, 428.5);
+				$motion = (new Vector3(-61.5, 7, 428.5))->subtract($p)->multiply(3);
 			}
 			if(($x === -92) and ($z === 441)){
-				$p->sendMessage("Boosting!");
-				$p->setMotion((new Vector3(-91.5, 6, 463.5))->subtract($p)->divide(3));
+				$tp = new Vector3(-91.5, 8, 439.5);
+				$motion = (new Vector3(-91.5, 7, 463.5))->subtract($p)->multiply(3);
 			}
 			if(($x === -105) and ($z === 428)){
-				$p->sendMessage("Boosting!");
-				$p->setMotion((new Vector3(-126.5, 6, 428.5))->subtract($p)->divide(3));
+				$tp = new Vector3(-102.5, 8, 428.5);
+				$motion = (new Vector3(-126.5, 7, 428.5))->subtract($p)->multiply(3);
 			}
 			if(($x === -92) and ($z === 415)){
-				$p->sendMessage("Boosting!");
-				$p->setMotion((new Vector3(-91.5, 6, 463.5))->subtract($p)->divide(3));
+				$tp = new Vector3(-91.5, 8, 417.5);
+				$motion = (new Vector3(-91.5, 7, 463.5))->subtract($p)->multiply(3);
+			}
+			if(isset($tp, $motion)){
+				$p->teleport($tp);
+				$motion->y = 0;
+				$p->setMotion($motion);
 			}
 		}
 	}
@@ -821,6 +826,32 @@ class Settings{
 			return 12;
 		}
 		return 8;
+	}
+	public static function checkInvisibility(Position $pos){
+		if($pos->getLevel()->getName() === "world_pvp"){
+			if((121 <= $pos->x) and ($pos->x < 126)){
+				if((-5 <= $pos->x) and ($pos->x < 0)){
+					return $pos->y > 63;
+				}
+			}
+			return false;
+		}
+		if($pos->getLevel()->getName() === "world"){
+			if((-93 <= $pos->x) and ($pos->x < -91)){
+				if((427 <= $pos->z) and ($pos->z < 430)){
+					return true;
+				}
+			}
+			return false;
+		}
+		if($pos->getLevel()->getName() === "world_parkour"){
+			if((920 <= $pos->x) and ($pos->x < 924)){
+				if((-4 <= $pos->z) and ($pos->z < 0)){
+					return $pos->y > 8;
+				}
+			}
+		}
+		return false;
 	}
 }
 
