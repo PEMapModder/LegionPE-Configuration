@@ -145,9 +145,9 @@ class Settings{
 				$motion = (new Vector3(-91.5, 7, 463.5))->subtract($p)->multiply(3);
 			}
 			if(isset($tp, $motion)){
-				$p->teleport($tp);
+//				$p->teleport($tp);
 				$motion->y = 0;
-				$p->setMotion($motion);
+				$p->setMotion($motion->multiply(-1));
 			}
 		}
 	}
