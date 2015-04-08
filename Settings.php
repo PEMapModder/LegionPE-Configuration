@@ -40,6 +40,7 @@ use pocketmine\level\Location;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
+use pocketmine\scheduler\CallbackTask;
 use pocketmine\Server;
 use pocketmine\tile\Sign;
 
@@ -130,26 +131,50 @@ class Settings{
 		if($y === 7){
 			if(($x === -79) and ($z === 428)){
 				$tp = new Vector3(-80.5, 8, 428.5);
-				$motion = (new Vector3(-61.5, 7, 428.5))->subtract($p)->multiply(3);
+				$correct = new Vector3(-61.5, 8, 428.5);
 			}
 			if(($x === -92) and ($z === 441)){
 				$tp = new Vector3(-91.5, 8, 439.5);
-				$motion = (new Vector3(-91.5, 7, 463.5))->subtract($p)->multiply(3);
+				$correct = new Vector3(-91.5, 8, 463.5);
 			}
 			if(($x === -105) and ($z === 428)){
 				$tp = new Vector3(-102.5, 8, 428.5);
-				$motion = (new Vector3(-126.5, 7, 428.5))->subtract($p)->multiply(3);
+				$correct = new Vector3(-126.5, 8, 428.5);
 			}
 			if(($x === -92) and ($z === 415)){
 				$tp = new Vector3(-91.5, 8, 417.5);
-				$motion = (new Vector3(-91.5, 7, 463.5))->subtract($p)->multiply(3);
+				$correct = new Vector3(-91.5, 8, 463.5);
 			}
-			if(isset($tp, $motion)){
-//				$p->teleport($tp);
-				$motion->y = 0;
-				$p->setMotion($motion->multiply(-1));
+			if(isset($tp, $correct)){
+				$p->teleport($tp);
+				$p->getServer()->getScheduler()->scheduleDelayedTask(new CallbackTask(array(self::class, "boostTo"), [$p, $correct]), 12);
 			}
 		}
+	}
+	public static function boostTo(Player $player, Vector3 $target){
+		$vectors = $target->subtract($player);
+		$vectors->y = 0;
+		$player->setMotion($vectors->divide(40));
+	}
+	public static function portalBoost2(Player $player){
+		if($player->getLevel() !== "world"){
+			return;
+		}
+		$x = $player->x;
+		$y = $player->y;
+		$z = $player->z;
+		if(426 <= $z){
+			if($z <= 430){
+				if($x <= -102){
+					if(-105 <= $x){
+						$player->_portalOffTill = microtime(true) + 2;
+						$player->setMotion(new Vector3(10, 0, 0));
+					}
+					//TODO
+				}
+			}
+		}
+
 	}
 	public static function coinsFactor(Session $session, $force = false){
 		if(!$session->isGrindingCoins() and !$force){
