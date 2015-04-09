@@ -146,7 +146,7 @@ class Settings{
 				$correct = new Vector3(-91.5, 8, 463.5);
 			}
 			if(isset($tp, $correct)){
-				$p->teleport($tp);
+//				$p->teleport($tp);
 				$p->getServer()->getScheduler()->scheduleDelayedTask(new CallbackTask(array(self::class, "boostTo"), [$p, $correct]), 12);
 			}
 		}
@@ -154,7 +154,7 @@ class Settings{
 	public static function boostTo(Player $player, Vector3 $target){
 		$vectors = $target->subtract($player);
 		$vectors->y = 0;
-		$player->setMotion($vectors->divide(40));
+		$player->setMotion($vectors->divide(5));
 	}
 	public static function portalBoost2(Player $player){
 		if($player->getLevel() !== "world"){
@@ -839,20 +839,17 @@ class Settings{
 		}
 		$imporatnce = $rank & self::RANK_SECTOR_IMPORTANCE;
 		if($imporatnce === self::RANK_IMPORTANCE_VIP_PLUS){
-			return 20;
+			return 8;
 		}
 		if($imporatnce === self::RANK_IMPORTANCE_VIP){
-			return 18;
+			return 4;
 		}
-		if($imporatnce === self::RANK_IMPORTANCE_DONATOR_PLUS){
-			return 16;
-		}
-		if($imporatnce === self::RANK_IMPORTANCE_DONATOR){
-			return 12;
-		}
-		return 8;
+		return 0;
 	}
 	public static function checkInvisibility(Position $pos){
+		if(true){
+			return false;
+		}
 		if($pos->getLevel()->getName() === "world_pvp"){
 			if((121 <= $pos->x) and ($pos->x < 126)){
 				if((-5 <= $pos->x) and ($pos->x < 0)){
