@@ -40,7 +40,6 @@ use pocketmine\level\Location;
 use pocketmine\level\Position;
 use pocketmine\math\Vector3;
 use pocketmine\Player;
-use pocketmine\scheduler\CallbackTask;
 use pocketmine\Server;
 use pocketmine\tile\Sign;
 
@@ -93,6 +92,32 @@ class Settings{
 	/** @var KitUpgradeInfo[][] */
 	public static $KITPVP_KITS = [];
 	public static $INFECTED_WORLDS = ["infected_base_1"];
+	public static $RANDOM_BROADCASTS = [
+		"Use /coins to view your coins! You can use them in the shops.",
+		"Use /hub to go back to hub!",
+		"Use `/chat off` to turn off chat from everyone! (chat will be turned back on when you rejoin)",
+		"Use `/ignore|unignore <player>` to ignore/unignore players!",
+		"Use `/tpr`, `/tpa`, `/tpd` and `/tpc` to handle teleport requests (KitPvP only)!",
+		"Use /stats to view your stats!",
+		"Tired of your friends accusing you killing them? Use /friend. (KitPvP only)",
+		"Use /restart to reset your parkour progress and teleport back to parkour spawn!",
+		"More minigames are coming soon!",
+		"Can't join because you're stuck at building terrain screen? Go to http://lgpe.co/omg",
+		"Please report bugs by tweeting @PEMapModder_Flw on Twitter or creating an issue at http://lgpe.co/bug",
+		"Changed your mind and wanna enable/disable IP auth? No problem, run `/auth ip yes|no`.",
+		"Use /rules to check our server rules!",
+		"Players blocking your way? /hide them!",
+		"Do `/team create` to create your own team!",
+		"Want to get more friends? Visit http://legionpvp.eu to donate.",
+		"Want to have access to buying better items? Visit http://lgpe.co/l to donate.",
+		"Want to create your own team? Visit http://lgpe.co/l to donate.",
+		"Want to earn coins faster? Visit http://lgpe.co/l to donate.",
+		"Use `/ch t` to switch to your team channel, `/ch g` to go back!",
+		"Use `/chat off <channel>` to ignore chat messages from #<channel>!",
+		"NEVER give ANYone including staff members your password; we don't know your password and we won't need it.",
+		"NEVER give ANYone including staff members your password; we don't know your password and we won't need it.",
+		"NEVER give ANYone including staff members your password; we don't know your password and we won't need it.",
+	];
 
 	public static function init(Server $server){
 		foreach(["world", "world_parkour", "world_pvp", "world_spleef"] as $world){
@@ -100,6 +125,9 @@ class Settings{
 				$server->loadLevel($world);
 			}
 		}
+	}
+	public static function getRandomBroadcast(){
+		return self::$RANDOM_BROADCASTS[mt_rand(0, count(self::$RANDOM_BROADCASTS) - 1)];
 	}
 	public static function loginSpawn(Server $server){
 		return $server->getLevelByName("world")->getSpawnLocation();
@@ -147,7 +175,8 @@ class Settings{
 			}
 			if(isset($tp, $correct)){
 //				$p->teleport($tp);
-				$p->getServer()->getScheduler()->scheduleDelayedTask(new CallbackTask(array(self::class, "boostTo"), [$p, $correct]), 12);
+//				$p->getServer()->getScheduler()->scheduleDelayedTask(new CallbackTask(array(self::class, "boostTo"), [$p, $correct]), 12);
+				self::boostTo($p, $correct);
 			}
 		}
 	}
@@ -157,11 +186,15 @@ class Settings{
 		$player->setMotion($vectors->divide(5));
 	}
 	public static function portalBoost2(Player $player){
+		if(isset($player->_portalOffTill)){
+			if(microtime(true) <= $player->_portalOffTill){
+				return;
+			}
+		}
 		if($player->getLevel() !== "world"){
 			return;
 		}
 		$x = $player->x;
-		$y = $player->y;
 		$z = $player->z;
 		if(426 <= $z){
 			if($z <= 430){
@@ -174,7 +207,6 @@ class Settings{
 				}
 			}
 		}
-
 	}
 	public static function coinsFactor(Session $session, $force = false){
 		if(!$session->isGrindingCoins() and !$force){
