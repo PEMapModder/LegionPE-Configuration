@@ -465,22 +465,22 @@ class Settings{
 		$i = $rank & self::RANK_SECTOR_IMPORTANCE;
 		$p = $rank & self::RANK_SECTOR_PERMISSION;
 		if($i === self::RANK_IMPORTANCE_VIP_PLUS){
-			$session->getPlayer()->heal(15, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			$session->getPlayer()->heal(15, new EntityRegainhealthEvent($session->getPlayer(), 15, EntityRegainHealthEvent::CAUSE_CUSTOM));
 			return;
 		}
 		if($i === self::RANK_IMPORTANCE_VIP){
-			$session->getPlayer()->heal(10, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			$session->getPlayer()->heal(10, new EntityRegainhealthEvent($session->getPlayer(), 10, EntityRegainHealthEvent::CAUSE_CUSTOM));
 			return;
 		}
 		if($i === self::RANK_IMPORTANCE_DONATOR_PLUS){
-			$session->getPlayer()->heal(6, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			$session->getPlayer()->heal(6, new EntityRegainhealthEvent($session->getPlayer(), 6, EntityRegainHealthEvent::CAUSE_CUSTOM));
 			return;
 		}
 		if($i === self::RANK_IMPORTANCE_DONATOR or $p > 0){
-			$session->getPlayer()->heal(4, EntityRegainHealthEvent::CAUSE_CUSTOM);
+			$session->getPlayer()->heal(4, new EntityRegainHealthEvent($session->getPlayer(), 4, EntityRegainHealthEvent::CAUSE_CUSTOM));
 			return;
 		}
-		$session->getPlayer()->heal(2, EntityRegainHealthEvent::CAUSE_CUSTOM);
+		$session->getPlayer()->heal(2, new EntityRegainHealthEvent($session->getPlayer(), 2, EntityRegainHealthEvent::CAUSE_CUSTOM));
 	}
 	public static function kitpvp_getNpcLocation(Server $server, $id){
 		$id = (int) $id;
