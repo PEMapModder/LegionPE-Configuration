@@ -71,6 +71,6 @@ class KitUpgradeInfo{
 				return $ret;
 			}
 		}
-		return TextFormat::RED . "Unknown" . TextFormat::RESET;
+		return TextFormat::RED . "Unknown" . TextFormat::WHITE;
 	}
 }

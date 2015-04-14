@@ -368,10 +368,7 @@ class Settings{
 		return null;
 	}
 	public static function kitpvp_spawn(Server $server){
-//		foreach($server->getLevels() as $level){
-//			$server->getLogger()->debug("Level " . $level->getName() . " (" . $level->getFolderName() . ")");
-//		}
-		return new Position(123, 65, -3, $server->getLevelByName("world_pvp"));
+		return new Position(123, 70, -3, $server->getLevelByName("world_pvp"));
 	}
 	public static function kitpvp_maxFriends($rank){
 		if($rank instanceof Session){
