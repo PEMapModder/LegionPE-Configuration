@@ -542,7 +542,7 @@ class Settings{
 					"Wooden Bow",
 					"The basic wood holds the key to everything, from the basic crafting table " .
 					"to the tip of the majestic diamond sword.",
-					6, 0, 0,
+					8, 0, 0,
 					0
 				];
 			case 2:
@@ -551,7 +551,7 @@ class Settings{
 					"Ghast Bone Bow",
 					"The elastic ghast bone magnifies the power of ranged fighting, making " .
 					"ghasts one of the horrors in the Nether.",
-					8, 0, 0,
+					10, 0, 0,
 					self::RANK_IMPORTANCE_DONATOR
 				];
 			case 3:
@@ -560,7 +560,7 @@ class Settings{
 					"Blaze Rod Bow",
 					"Blaze rods build up the essence of fire, so its effect is still " .
 					"significant in the overworld where fire can be extinguished.",
-					9, 50, 0,
+					11, 50, 0,
 					self::RANK_IMPORTANCE_DONATOR_PLUS
 				];
 			case 4:
@@ -569,7 +569,7 @@ class Settings{
 					"Ender Rib Bow",
 					"The throned enderdragon rib is the tool that knocked numerous players " .
 					"into the void. Shall it be your weapon?",
-					10, 80, 20,
+					12, 80, 20,
 					self::RANK_IMPORTANCE_VIP
 				];
 		}
