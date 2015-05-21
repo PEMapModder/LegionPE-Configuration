@@ -79,7 +79,7 @@ class Settings{
 	// decorative ranks, which don't actually affect anything, 2 bits
 	/** Here you are, the youtuber rank */
 	const RANK_DECOR_YOUTUBER =             0x4000;
-	const RANK_SECTOR_DECOR =              0xC000;
+	const RANK_SECTOR_DECOR =               0xC000;
 
 	// kit sections
 	const KIT_HELMET = "helmet";
